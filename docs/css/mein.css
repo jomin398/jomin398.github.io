@@ -1,0 +1,18 @@
+body{
+    background-color: black;
+    font-family: Arial, "メイリオ", "ＭＳ Ｐゴシック", sans-serif;
+    margin: 0px;
+    padding: 0px;
+}
+.mein_text {
+    font-size: 150%;
+    font-weight: bold;
+    color: #f00082;
+    line-height: 1.4;
+    letter-spacing: 1px;
+    text-shadow:
+    -1px -1px 0 #ffffffd5,
+    1px -1px 0 #ffffffd5,
+    -1px 1px 0 #ffffffd5,
+    1px 1px 0 #ffffffd5;  
+}
