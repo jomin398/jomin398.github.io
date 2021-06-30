@@ -30,6 +30,10 @@ body {
   background-color: #009090;
 }
 
+.mein-header ul li:last-child {
+  display: none;
+}
+
 .mein_text {
   background-color: #009090;
   font-size: 14pt;
@@ -38,8 +42,42 @@ body {
   line-height: 1.4;
   letter-spacing: 2px;
   text-shadow:
-    -1px -1px 0 #ffffffd5,
-    1px -1px 0 #ffffffd5,
-    -1px 1px 0 #ffffffd5,
-    1px 1px 0 #ffffffd5;
+      -1px -1px 0 #ffffffd5,
+      1px -1px 0 #ffffffd5,
+      -1px 1px 0 #ffffffd5,
+      1px 1px 0 #ffffffd5;
+}
+
+@media screen and (max-width: 500px) {
+  .mein-header ul li:not(:first-child) {
+      display: none;
+  }
+
+  .mein-header ul li:last-child {
+      display: block;
+      float: right;
+  }
+
+  .mein-header ul li a.icon {
+      display: block;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .mein-header.responsive ul li{
+    display: block;
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  .mein-header.responsive ul li a {
+      /* display: block; */
+      text-align: center;
+  }
+
+  .mein-header.responsive ul li a.icon {
+      position: absolute;
+      right: 0;
+      top: 0;
+  }
 }

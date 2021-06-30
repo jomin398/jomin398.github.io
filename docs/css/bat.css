@@ -1,0 +1,53 @@
+.mein-header ul li a.batteryContainer {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: inherit;
+    font-weight: bold;
+    padding: 14px 16px;
+}
+
+.batteryOuter {
+    border-radius: 3px;
+    border: 1px solid #8b8b8b;
+    padding: 1px;
+    width: 25px;
+    height: 9px;
+}
+a.batteryContainer:hover {
+    border: 2px solid white;
+}
+
+.batteryBump {
+    border-radius: 2px;
+    background-color: #8b8b8b;
+    margin: 2px;
+    width: 1px;
+    height: 3px;
+
+}
+
+.batteryLevel.text {
+    padding-left: 2px;
+    display: inherit;
+    font-size: 12pt;
+}
+
+#batteryLevel {
+    display: none;
+    border-radius: 2px;
+    background-color: #73AD21;
+    width: 25px;
+    height: 9px;
+}
+@media screen and (max-width: 500px) {
+    .mein-header.responsive ul li a.batteryContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+}

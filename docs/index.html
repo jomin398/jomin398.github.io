@@ -5,19 +5,54 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="piapro(ピアプロ)は、聞いて！見て！使って！認めて！を実現するCGM型コンテンツ投稿サイトです。">
+  <meta name="description" content="初音ミク Voiced Time and Battery Notification Service">
   <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
   <link rel="stylesheet" href="./css/mein.css">
+  <link rel="stylesheet" href="./css/bat.css">
 </head>
 
 <body>
-  <header class="mein-header">
+  <header class="mein-header" id="myTopnav">
     <ul>
       <li><a class="mein_text" href="#home">初音ミク</a></li>
       <li><a href="#contact">Contact</a></li>
-      <li class="right"><a href="#about">About</a></li>
+      <li><a href="#about">About</a></li>
+      <li>
+        <a href="javascript:void(0);" class="batteryContainer" data-use-internal-bms="false" onclick="">
+          <div class="batteryOuter">
+            <div id="batteryLevel"></div>
+          </div>
+          <div class="batteryBump"></div>
+          <div class="batteryLevel text">[data Loading]</div>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0);" class="icon" onclick="menu()">
+          <i class="fa fa-bars"></i>
+        </a>
+      </li>
     </ul>
   </header>
+  <script>
+    function menu() {
+      var x = document.getElementById("myTopnav");
+      if (x.className === "mein-header") {
+        x.className += " responsive";
+      } else {
+        x.className = "mein-header";
+      }
+    }
+    let iconnode = document.createElement("i");
+    iconnode.className = "fas fa-exclamation";
+    document.getElementById("batteryLevel").appendChild(iconnode);
+    let node = document.getElementById("batteryLevel");
+    node.style.color = "white";
+    node.style.backgroundColor ="red";
+    // node.style.width = 0;
+    node.style.display= "block";
+
+  </script>
 </body>
 
 </html>
