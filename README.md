@@ -1,4 +1,4 @@
-# vjclab.github.io
+# 初音ミク Voiced Time and Battery Notification Service
 初音ミク Voiced Time and Battery Notification Service
 
 ### licenses
