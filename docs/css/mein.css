@@ -1,18 +1,45 @@
-body{
-    background-color: black;
-    font-family: Arial, "メイリオ", "ＭＳ Ｐゴシック", sans-serif;
-    margin: 0px;
-    padding: 0px;
+body {
+  background-color: black;
+  /*#32373c*/
+  font-family: Arial, "メイリオ", "ＭＳ Ｐゴシック", sans-serif;
+  margin: 0px;
+  padding: 0px;
 }
+
+.mein-header ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+.mein-header ul li {
+  float: left;
+}
+
+.mein-header ul li a {
+  font-size: 14pt;
+  display: block;
+  padding: 14px 16px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.mein-header ul li a:hover:not(.active) {
+  background-color: #009090;
+}
+
 .mein_text {
-    font-size: 150%;
-    font-weight: bold;
-    color: #f00082;
-    line-height: 1.4;
-    letter-spacing: 1px;
-    text-shadow:
+  background-color: #009090;
+  font-size: 14pt;
+  font-weight: bold;
+  color: #F00082;
+  line-height: 1.4;
+  letter-spacing: 2px;
+  text-shadow:
     -1px -1px 0 #ffffffd5,
     1px -1px 0 #ffffffd5,
     -1px 1px 0 #ffffffd5,
-    1px 1px 0 #ffffffd5;  
+    1px 1px 0 #ffffffd5;
 }
