@@ -8,9 +8,11 @@
 > このプロジェクトは [ピアプロ・キャラクター・ライセンス](https://piapro.jp/license/pcl/summary)に 基づいて クリプトン・フューチャー・メディア 株式会社の キャラクター<br>
  「初音ミク」（キャラクターの名前）を描いたものです。<br>
  This Project uses voice of 「Hatsune Miku(初音ミク)」 copylighted by Crypton Future Media, inc. licensed under [PIAPRO Charactor License](https://piapro.jp/license/pcl/summary).<br>
- Hatsune Miku(初音ミク) © Crypton Future Media, Inc., licensed under a [CC BY-NC](http://creativecommons.org/licenses/by-nc/3.0).
+ Hatsune Miku(初音ミク) © Crypton Future Media, Inc., licensed under a [CC BY-NC](http://creativecommons.org/licenses/by-nc/3.0).<br>
+<br>
+Voices by : Icemo-P (アイス芋P) & Sodadayo20
+- [battery css](docs/css/bat.css) by [Rich Somerfield](http://richsomerfield.com/blog/2019-06-10-css-battery-indicator/) licensed under a [CC BY-NC](http://creativecommons.org/licenses/by-nc/3.0).
 
-> Voices by : Icemo-P (アイス芋P) & Sodadayo20
 ---
 ### files
 docs/
@@ -25,3 +27,4 @@ docs/
 	2. img/ (not used)
 2. js/ (javascripts for html)
 3. css/
+

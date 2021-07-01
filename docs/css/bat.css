@@ -17,6 +17,7 @@
     padding: 1px;
     width: 25px;
     height: 9px;
+    text-shadow: none;
 }
 .batteryBump {
     border-radius: 2px;

@@ -25,20 +25,6 @@ body {
   padding: 14px 16px;
   text-align: center;
   text-decoration: none;
-  color: white;
-}
-
-.mein-header ul li a:hover:not(.mein_text) {
-  background-color: #009090;
-    border: 2px solid white;
-}
-
-.mein-header ul li:last-child {
-  display: none;
-}
-
-.mein-header ul li a.mein_text {
-  background-color: #009090;
   font-size: 14pt;
   font-weight: bold;
   color: #F00082;
@@ -49,6 +35,18 @@ body {
       1px -1px 0 #ffffffd5,
       -1px 1px 0 #ffffffd5,
       1px 1px 0 #ffffffd5;
+
+}
+.mein-header ul li:first-child{
+  background-color: #009090;
+}
+.mein-header ul li a:hover:not(.mein_text) {
+  background-color: #009090;
+    border: 2px solid white;
+}
+
+.mein-header ul li:last-child {
+  display: none;
 }
 
 @media screen and (max-width: 500px) {
