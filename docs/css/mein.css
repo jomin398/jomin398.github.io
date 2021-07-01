@@ -4,6 +4,7 @@ body {
   font-family: Arial, "メイリオ", "ＭＳ Ｐゴシック", sans-serif;
   margin: 0px;
   padding: 0px;
+  
 }
 
 .mein-header ul {
@@ -24,17 +25,19 @@ body {
   padding: 14px 16px;
   text-align: center;
   text-decoration: none;
+  color: white;
 }
 
-.mein-header ul li a:hover:not(.active) {
+.mein-header ul li a:hover:not(.mein_text) {
   background-color: #009090;
+    border: 2px solid white;
 }
 
 .mein-header ul li:last-child {
   display: none;
 }
 
-.mein_text {
+.mein-header ul li a.mein_text {
   background-color: #009090;
   font-size: 14pt;
   font-weight: bold;

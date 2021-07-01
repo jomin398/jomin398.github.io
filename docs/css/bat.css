@@ -18,10 +18,6 @@
     width: 25px;
     height: 9px;
 }
-a.batteryContainer:hover {
-    border: 2px solid white;
-}
-
 .batteryBump {
     border-radius: 2px;
     background-color: #8b8b8b;
