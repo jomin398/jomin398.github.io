@@ -10,7 +10,6 @@
     font-weight: bold;
     padding: 14px 16px;
 }
-
 .batteryOuter {
     border-radius: 3px;
     border: 1px solid #8b8b8b;
@@ -40,6 +39,10 @@
     background-color: #73AD21;
     width: 25px;
     height: 9px;
+}
+#batteryLevel i#onerror{
+    color: darkgoldenrod;
+    position: relative;
 }
 @media screen and (max-width: 500px) {
     .mein-header.responsive ul li a.batteryContainer {

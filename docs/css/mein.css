@@ -2,8 +2,8 @@ body {
   background-color: black;
   /*#32373c*/
   font-family: Arial, "メイリオ", "ＭＳ Ｐゴシック", sans-serif;
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   
 }
 
@@ -19,7 +19,7 @@ body {
   float: left;
 }
 
-.mein-header ul li a {
+.mein-header ul li a, .dropdown label{
   font-size: 14pt;
   display: block;
   padding: 14px 16px;
@@ -47,6 +47,13 @@ body {
 
 .mein-header ul li:last-child {
   display: none;
+}
+
+.mein-header ul.dropdown{
+  display: none;
+}
+.mein-header ul.dropdown li{
+  display: block;
 }
 
 @media screen and (max-width: 500px) {
