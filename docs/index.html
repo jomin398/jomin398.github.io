@@ -7,11 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="初音ミク Voiced Time and Battery Notification Service">
   <title>Document</title>
-  
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
   <link rel="stylesheet" href="./css/mein.css">
   <link rel="stylesheet" href="./css/bat.css">
+  <link type="text/css" rel="stylesheet" href="./css/render.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -22,7 +24,8 @@
       <li><a href="#contact">Contact</a></li>
       <li><a href="#about">About</a></li>
       <li>
-        <a class="batteryContainer" data-use-internal-bms="false" href="javascript:void(0);" onclick='hidShow("ul.dropdown");'>
+        <a class="batteryContainer" data-use-internal-bms="false" href="javascript:void(0);"
+          onclick='hidShow("ul.dropdown");'>
           <div class="batteryOuter">
             <div id="batteryLevel"></div>
           </div>
@@ -38,6 +41,228 @@
     </ul>
     <script src="./js/homepage.js"></script>
   </header>
+  <div id="setup">
+    <label>Choose a charactor:</label>
+    <select name="characters" id="characters" onchange="console.log(this.options[this.selectedIndex].text)">
+      <option id="0" value="miku_v2" selected>miku v2</option>
+      <option id="1" value="ちびApMiku">ちびミク</option>
+    </select>
+    <label>Choose a song:</label>
+    <select name="songs" id="songs" onchange="console.log(this.options[this.selectedIndex].text)">
+      <option id="0" value="wavefile_v2" selected>wavefile - 初音ミク</option>
+    </select>
+  </div>
+  <div class="overlay" id="startButton">
+    <button id="startButton">Play</button>
+  </div>
+  <div class="overlay" id="stopButton">
+    <button id="stopButton">Stop</button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/js/libs/ammo.wasm.js"></script>
+  <script type="module">
+    // Find the latest version by visiting https://cdn.skypack.dev/three.
+    import * as THREE from 'https://cdn.skypack.dev/three@v0.130.0';
+    import {
+      OutlineEffect
+    } from 'https://cdn.skypack.dev/three@v0.130.0/examples/jsm/effects/OutlineEffect.js'; // './jsm/effects/OutlineEffect.js';
+    import {
+      MMDLoader
+    } from 'https://cdn.skypack.dev/three@v0.130.0/examples/jsm/loaders/MMDLoader.js'; // './jsm/loaders/MMDLoader.js';
+    import {
+      MMDAnimationHelper
+    } from 'https://cdn.skypack.dev/three@v0.130.0/examples/jsm/animation/MMDAnimationHelper.js'; //'./jsm/animation/MMDAnimationHelper.js';
+
+    let mesh, camera, scene, renderer, effect;
+    let helper;
+    let ready = false;
+    const clock = new THREE.Clock();
+    const startButton = document.getElementById('startButton');
+    startButton.addEventListener('click', function () {
+      Ammo()
+        .then(function () {
+          init();
+          animate();
+        });
+    });
+
+    //sky
+    // see more at https://github.com/mrdoob/three.js/blob/dev/examples/webgl_shaders_sky.html
+    import {
+      GUI
+    } from 'https://cdn.skypack.dev/three@v0.130.0/examples/jsm/libs/dat.gui.module.js';
+    import {
+      OrbitControls
+    } from 'https://cdn.skypack.dev/three@v0.130.0/examples/jsm/controls/OrbitControls.js';
+    import {
+      Sky
+    } from 'https://cdn.skypack.dev/three@v0.130.0/examples/jsm/objects/Sky.js';
+
+    let sky, sun;
+
+    function initSky() {
+
+      // Add Sky
+      sky = new Sky();
+      sky.scale.setScalar(450000);
+      scene.add(sky);
+
+      sun = new THREE.Vector3();
+
+      /// GUI
+
+      const effectController = {
+        turbidity: 10,
+        rayleigh: 3,
+        mieCoefficient: 0.005,
+        mieDirectionalG: 0.7,
+        elevation: 2,
+        azimuth: 180,
+        exposure: renderer.toneMappingExposure,
+        // outlineEffect: true
+      };
+
+      function guiChanged() {
+
+        const uniforms = sky.material.uniforms;
+        uniforms['turbidity'].value = effectController.turbidity;
+        uniforms['rayleigh'].value = effectController.rayleigh;
+        uniforms['mieCoefficient'].value = effectController.mieCoefficient;
+        uniforms['mieDirectionalG'].value = effectController.mieDirectionalG;
+
+        const phi = THREE.MathUtils.degToRad(90 - effectController.elevation);
+        const theta = THREE.MathUtils.degToRad(effectController.azimuth);
+
+        sun.setFromSphericalCoords(1, phi, theta);
+
+        uniforms['sunPosition'].value.copy(sun);
+
+        renderer.toneMappingExposure = effectController.exposure;
+        renderer.render(scene, camera);
+
+      }
+
+      const gui = new GUI();
+
+      gui.add(effectController, 'turbidity', 0.0, 20.0, 0.1).onChange(guiChanged);
+      gui.add(effectController, 'rayleigh', 0.0, 4, 0.001).onChange(guiChanged);
+      gui.add(effectController, 'mieCoefficient', 0.0, 0.1, 0.001).onChange(guiChanged);
+      gui.add(effectController, 'mieDirectionalG', 0.0, 1, 0.001).onChange(guiChanged);
+      gui.add(effectController, 'elevation', 0, 90, 0.1).onChange(guiChanged);
+      gui.add(effectController, 'azimuth', -180, 180, 0.1).onChange(guiChanged);
+      gui.add(effectController, 'exposure', 0, 1, 0.0001).onChange(guiChanged);
+      // gui.add(effectController, 'outlineEffect').onChange(guiChanged);
+      guiChanged();
+
+    }
+    //end 
+    function init() {
+      //get selected parems
+      let e = document.querySelector("#setup select#characters");
+      let chrChoiced = e.options[e.selectedIndex].text;
+      console.log("charactor : " + chrChoiced);
+      let d = document.querySelector("#setup select#songs");
+      console.log("song : " + d.options[d.selectedIndex].text);
+
+      //hide setup when song start.
+      document.getElementById("setup").remove();
+
+      // hide play button.
+      const stb = document.getElementById('startButton');
+      stb.style.display = 'none';
+      const stpb = document.getElementById('stopButton');
+      stpb.style.display = 'block';
+      stpb.addEventListener('click', function () {
+        location.reload();
+      });
+      // make rendering display.
+      const container = document.createElement('div');
+      document.body.appendChild(container);
+      camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
+      // scene
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xffffff);
+      scene.add(new THREE.PolarGridHelper(30, 10));
+      const listener = new THREE.AudioListener();
+      camera.add(listener);
+      scene.add(camera);
+      const ambient = new THREE.AmbientLight(0x666666);
+      scene.add(ambient);
+      const directionalLight = new THREE.DirectionalLight(0x887766);
+      directionalLight.position.set(-1, 1, 1)
+        .normalize();
+      scene.add(directionalLight);
+      //
+      renderer = new THREE.WebGLRenderer({
+        antialias: true
+      });
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      container.appendChild(renderer.domElement);
+      effect = new OutlineEffect(renderer);
+      // model
+      function onProgress(xhr) {
+        if (xhr.lengthComputable) {
+          const percentComplete = xhr.loaded / xhr.total * 100;
+          console.log(Math.round(percentComplete, 2) + '% downloaded');
+        }
+      }
+      // files
+      const modelFile = 'assets/models/mmd/' + chrChoiced + '/' + chrChoiced + '.pmd';
+      const vmdFiles = ['assets/models/mmd/vmds/wavefile_v2.vmd'];
+      const cameraFiles = ['assets/models/mmd/vmds/wavefile_camera.vmd'];
+      const audioFile = 'assets/models/mmd/audios/wavefile_short.mp3';
+
+      // !! delay unit is sec. !!
+      // see more https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode/start
+      const audioParams = {
+        delayTime: 160 * 1 / 30
+      };
+
+      helper = new MMDAnimationHelper();
+      const loader = new MMDLoader();
+      loader.loadWithAnimation(modelFile, vmdFiles, function (mmd) {
+        mesh = mmd.mesh;
+        helper.add(mesh, {
+          animation: mmd.animation,
+          physics: true
+        });
+        loader.loadAnimation(cameraFiles, camera, function (cameraAnimation) {
+          helper.add(camera, {
+            animation: cameraAnimation
+          });
+          new THREE.AudioLoader()
+            .load(audioFile, function (buffer) {
+              const audio = new THREE.Audio(listener)
+                .setBuffer(buffer);
+              helper.add(audio, audioParams);
+              scene.add(mesh);
+              ready = true;
+            }, onProgress, null);
+        }, onProgress, null);
+      }, onProgress, null);
+      //
+      window.addEventListener('resize', onWindowResize);
+      initSky();
+    }
+
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      effect.setSize(window.innerWidth, window.innerHeight);
+    }
+    //
+    function animate() {
+      requestAnimationFrame(animate);
+      render();
+    }
+
+    function render() {
+      if (ready) {
+        helper.update(clock.getDelta());
+      }
+      effect.render(scene, camera);
+    }
+  </script>
 </body>
 
 </html>
