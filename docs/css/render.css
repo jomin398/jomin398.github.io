@@ -78,9 +78,9 @@ a, button, input, select {
 	}
 
 	.overlay#stopButton{
-		z-index: 3;
+		z-index: 2;
 		position: absolute;
-		margin-top: 70px;
+		margin-top: 20%;
 		display: none;
 		background: transparent;
 		/* position: relative; */
