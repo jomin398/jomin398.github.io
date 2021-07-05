@@ -39,19 +39,20 @@
         </a>
       </li>
     </ul>
+    <script src="./assets/models/mmd/setup.js"></script>
     <script src="./js/homepage.js"></script>
   </header>
   <div id="setup">
-    <label>Choose a charactor:</label>
-    <select name="characters" id="characters" onchange="console.log(this.options[this.selectedIndex].text)">
+    <!-- <label>Choose a charactor:</label>
+    <select id="characters">
       <option id="0" selected>miku_v2</option>
       <option id="1">ApiMiku</option>
     </select>
     <label>Choose a song:</label>
-    <select name="songs" id="songs" onchange="console.log(this.options[this.selectedIndex].text)">
+    <select id="songs">
       <option id="0" selected>wavefile</option>
       <option id="1">Rough</option>
-    </select>
+    </select> -->
   </div>
   <div class="overlay" id="startButton">
     <button id="startButton">Play</button>
@@ -59,16 +60,53 @@
   <div class="overlay" id="stopButton">
     <button id="stopButton">Stop</button>
   </div>
-  
+
   <div id="info">
     <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - MMDLoader test<br />
     <a id="songName">[nameplace]</a> by <a id="songAuthor">[nameplace]</a>, <a id="artistName">[nameplace]</a><br>
+    <a id="songDencer">[nameplace]</a>
   </div>
 
   </div>
   <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/js/libs/ammo.wasm.js"></script>
-  <script src="./assets/models/mmd/setup.js"></script>
   <script type="module">
+    function pageInit() {
+      let chrlist = Object.keys(mmdsetUpData).slice(0, -1);
+      let songlist = Object.keys(mmdsetUpData.songParams);
+      let chrSelectWraper = document.createElement("select");
+      chrSelectWraper.id = "characters";
+      for (let i in chrlist) {
+        let choices = document.createElement("option");
+        choices.id = i;
+        choices.innerText = chrlist[i];
+        if (i == 0) {
+          choices.setAttribute('selected', 'selected');
+        }
+        chrSelectWraper.appendChild(choices);
+      }
+
+      let songSelectWraper = document.createElement("select");
+      songSelectWraper.id = "songs";
+      for (let i in songlist) {
+        let choices = document.createElement("option");
+        choices.id = i;
+        choices.innerText = songlist[i];
+        if (i == 0) {
+          choices.setAttribute('selected', 'selected');
+        }
+        songSelectWraper.appendChild(choices);
+      }
+
+      document.getElementById("setup").append(
+        document.createElement("label").innerText = "Choose a charactor : ",
+        chrSelectWraper,
+        document.createElement("br"),
+        document.createElement("label").innerText = "Choose a song : ",
+        songSelectWraper
+      )
+    }
+    pageInit();
+
     // Find the latest version by visiting https://cdn.skypack.dev/three.
     import * as THREE from 'https://cdn.skypack.dev/three@v0.130.0';
     import {
@@ -170,7 +208,7 @@
       let chrChoiced = e.options[e.selectedIndex].text;
       console.log("charactor : " + chrChoiced);
       let d = document.querySelector("#setup select#songs");
-      let songname = d.options[d.selectedIndex].text
+      let songname = d.options[d.selectedIndex].text;
       console.log("song : " + songname);
       console.log(mmdsetUpData[chrChoiced]);
       //hide setup when song start.
@@ -227,14 +265,14 @@
       console.log(mmdsetUpData.songParams[songname]);
       // files
       let songParams = mmdsetUpData.songParams[songname];
-      
+      console.log(mmdsetUpData[chrChoiced].fname);
       const modelFile = 'assets/models/mmd/' + chrChoiced + mmdsetUpData[chrChoiced].fname;
-      const vmdFiles = 'assets/models/songs/' + songParams.fname + '/' + songParams.vmd;
-      const cameraFiles = 'assets/models/songs/' + songParams.fname + '/' + songParams.cam;
-      const audioFile = 'assets/models/songs/' + songParams.fname + '/' + songParams.song;
-      document.querySelector("#info a#songName").innerText = "SongName : "+ songname;
-      document.querySelector("#info a#songAuthor").innerText = songParams.author;
-      document.querySelector("#info a#artistName").innerText = "Artist : "+ songParams.artist;
+      console.log(modelFile);
+      const vmdFiles = 'assets/models/songs/' + songParams.fname + songParams.vmd;
+      const cameraFiles = 'assets/models/songs/' + songParams.fname + songParams.cam;
+      const audioFile = 'assets/models/songs/' + songParams.fname + songParams.song;
+      console.log(audioFile)
+      displaySongInfo(songname,songParams,chrChoiced);
       // !! delay unit is sec. !!
       // see more https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode/start
       const audioParams = {

@@ -29,7 +29,7 @@ docs/
       - mmd/
       - miku_v2
       - ちびミク (あぴミク)
-      - miku_v4
+      - Tda式初音ミク・アペンドVer1.10 (by [TDA](https://seiga.nicovideo.jp/seiga/im2018614))
       - songs/
         - wavefile_shorts (default)
         - GFRIEND_Rough

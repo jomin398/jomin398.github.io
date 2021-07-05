@@ -56,4 +56,10 @@ x.style.display = "none";
     document.querySelector(".mein-header ul li a.batteryContainer").dataset.useInternalBms =document.querySelector(".dropdown label input").checked;
     bmsInit("RE ");
   }
+  function displaySongInfo(songname,songParams,chrChoiced){
+    document.querySelector("#info a#songName").innerText = "SongName : " + songname;
+    document.querySelector("#info a#songAuthor").innerText = songParams.author;
+    document.querySelector("#info a#artistName").innerText = "Artist : " + (songParams.artist == "初音ミク") ? songParams.artist + " (VocalTranned by " + songParams.vocalTranner + ")" : songParams.artist;
+    document.querySelector("#info a#songDencer").innerText = "songDencer : " + mmdsetUpData[chrChoiced].fname.replace(/\/|\.pmd?x?/gm, "");
+  }
   init();
