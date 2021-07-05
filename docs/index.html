@@ -44,12 +44,13 @@
   <div id="setup">
     <label>Choose a charactor:</label>
     <select name="characters" id="characters" onchange="console.log(this.options[this.selectedIndex].text)">
-      <option id="0" value="miku_v2" selected>miku v2</option>
-      <option id="1" value="ちびApMiku">ちびミク</option>
+      <option id="0" selected>miku_v2</option>
+      <option id="1">ちびミク</option>
     </select>
     <label>Choose a song:</label>
     <select name="songs" id="songs" onchange="console.log(this.options[this.selectedIndex].text)">
-      <option id="0" value="wavefile_v2" selected>wavefile - 初音ミク</option>
+      <option id="0" selected>wavefile</option>
+      <option id="1">Rough</option>
     </select>
   </div>
   <div class="overlay" id="startButton">
@@ -58,7 +59,14 @@
   <div class="overlay" id="stopButton">
     <button id="stopButton">Stop</button>
   </div>
+  <div id="info">
+    <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - MMDLoader test<br />
+    <a id="songName">[nameplace]</a> , <a id="artistName">[nameplace]</a><br>
+  </div>
+
+  </div>
   <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/js/libs/ammo.wasm.js"></script>
+  <script src="./assets/models/mmd/setup.js"></script>
   <script type="module">
     // Find the latest version by visiting https://cdn.skypack.dev/three.
     import * as THREE from 'https://cdn.skypack.dev/three@v0.130.0';
@@ -161,8 +169,10 @@
       let chrChoiced = e.options[e.selectedIndex].text;
       console.log("charactor : " + chrChoiced);
       let d = document.querySelector("#setup select#songs");
-      console.log("song : " + d.options[d.selectedIndex].text);
-
+      let songname = d.options[d.selectedIndex].text
+      console.log("song : " + songname);
+      let isAP = (chrChoiced == "ちびミク");
+      console.log(mmdsetUpData[chrChoiced]);
       //hide setup when song start.
       document.getElementById("setup").remove();
 
@@ -181,7 +191,15 @@
       // scene
       scene = new THREE.Scene();
       scene.background = new THREE.Color(0xffffff);
-      scene.add(new THREE.PolarGridHelper(30, 10));
+      //floor
+      const floor = new THREE.PolarGridHelper(30, 10);
+      if (!mmdsetUpData[chrChoiced]) {
+        throw ReferenceError("character is cannot be null.")
+      }
+      let fOffset = mmdsetUpData[chrChoiced].floorOffset;
+      floor.position.set(fOffset[0], fOffset[1], fOffset[2]);
+      scene.add(floor);
+
       const listener = new THREE.AudioListener();
       camera.add(listener);
       scene.add(camera);
@@ -206,26 +224,33 @@
           console.log(Math.round(percentComplete, 2) + '% downloaded');
         }
       }
+      console.log(mmdsetUpData.songParams[songname]);
       // files
+      let songParams = mmdsetUpData.songParams[songname];
       const modelFile = 'assets/models/mmd/' + chrChoiced + '/' + chrChoiced + '.pmd';
-      const vmdFiles = ['assets/models/mmd/vmds/wavefile_v2.vmd'];
-      const cameraFiles = ['assets/models/mmd/vmds/wavefile_camera.vmd'];
-      const audioFile = 'assets/models/mmd/audios/wavefile_short.mp3';
-
+      const vmdFiles = 'assets/models/songs/' + songParams.fname + '/' + songParams.vmd;
+      const cameraFiles = 'assets/models/songs/' + songParams.fname + '/' + songParams.cam;
+      const audioFile = 'assets/models/songs/' + songParams.fname + '/' + songParams.song;
+      document.querySelector("#info a#songName").innerText = "SongName : "+ songname;
+      document.querySelector("#info a#artistName").innerText = "Artist : "+ songParams.artist;
       // !! delay unit is sec. !!
       // see more https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode/start
       const audioParams = {
-        delayTime: 160 * 1 / 30
+        delayTime: songParams.delayTime
       };
 
       helper = new MMDAnimationHelper();
       const loader = new MMDLoader();
+      // add charactor
       loader.loadWithAnimation(modelFile, vmdFiles, function (mmd) {
         mesh = mmd.mesh;
+        let cOffset = mmdsetUpData[chrChoiced].chrOffset;
+        mesh.position.set(cOffset[0], cOffset[1], cOffset[2]);
         helper.add(mesh, {
           animation: mmd.animation,
           physics: true
         });
+        // scene.position.set(0,5,0); // offset;
         loader.loadAnimation(cameraFiles, camera, function (cameraAnimation) {
           helper.add(camera, {
             animation: cameraAnimation
@@ -240,7 +265,18 @@
             }, onProgress, null);
         }, onProgress, null);
       }, onProgress, null);
-      //
+      /*try add char temp*/
+      // let mashh;
+      // loader.loadWithAnimation('assets/models/mmd/ちびミク/ちびミク.pmd', vmdFiles, function (mmd) {
+      //   mashh = mmd.mesh;
+      //   mashh.position.set(10,0,0); // offset;
+      //   helper.add(mashh, {
+      //     animation: mmd.animation,
+      //     physics: true
+      //   });
+      //   scene.add(mashh);
+      // },onProgress, null);
+
       window.addEventListener('resize', onWindowResize);
       initSky();
     }
@@ -252,6 +288,7 @@
     }
     //
     function animate() {
+      document.querySelector("div#info").style.display = "block";
       requestAnimationFrame(animate);
       render();
     }

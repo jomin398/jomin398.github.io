@@ -1,20 +1,12 @@
-/* a {
-	color: #ff0;
-	text-decoration: none;
-}
-
-a:hover {
-	text-decoration: underline;
-} */
-
 button {
 	cursor: pointer;
 	text-transform: uppercase;
 }
 
 #info {
+	display: none;
 	position: absolute;
-	top: 0px;
+	top: 50px;
 	width: 100%;
 	padding: 10px;
 	box-sizing: border-box;
@@ -24,7 +16,12 @@ button {
 	-ms-user-select: none;
 	user-select: none;
 	pointer-events: none;
+	color: #000;
 	z-index: 1; /* TODO Solve this in HTML */
+}
+#info a {
+	color: #000;
+	text-decoration: none;
 }
 
 a, button, input, select {
