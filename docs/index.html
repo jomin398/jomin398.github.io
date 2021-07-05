@@ -46,7 +46,6 @@
     <select name="characters" id="characters" onchange="console.log(this.options[this.selectedIndex].text)">
       <option id="0" selected>miku_v2</option>
       <option id="1">ちびミク</option>
-      <option id="2">miku_v4x</option>
     </select>
     <label>Choose a song:</label>
     <select name="songs" id="songs" onchange="console.log(this.options[this.selectedIndex].text)">
@@ -173,7 +172,6 @@
       let d = document.querySelector("#setup select#songs");
       let songname = d.options[d.selectedIndex].text
       console.log("song : " + songname);
-      let isAP = (chrChoiced == "ちびミク");
       console.log(mmdsetUpData[chrChoiced]);
       //hide setup when song start.
       document.getElementById("setup").remove();
