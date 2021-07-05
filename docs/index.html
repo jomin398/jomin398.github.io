@@ -227,7 +227,8 @@
       console.log(mmdsetUpData.songParams[songname]);
       // files
       let songParams = mmdsetUpData.songParams[songname];
-      const modelFile = 'assets/models/mmd/' + chrChoiced + '/' + chrChoiced + '.pmd';
+      
+      const modelFile = 'assets/models/mmd/' + chrChoiced + mmdsetUpData[chrChoiced].fname;
       const vmdFiles = 'assets/models/songs/' + songParams.fname + '/' + songParams.vmd;
       const cameraFiles = 'assets/models/songs/' + songParams.fname + '/' + songParams.cam;
       const audioFile = 'assets/models/songs/' + songParams.fname + '/' + songParams.song;

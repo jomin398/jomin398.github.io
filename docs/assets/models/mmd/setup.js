@@ -1,9 +1,11 @@
 const mmdsetUpData = {
     miku_v2: {
+        fName:"/miku_v2.pmd",
         floorOffset: [0, 0, 0],
         chrOffset: [0, 0, 0]
     },
-    ちびミク: {
+    ApiMiku: {
+        fName:"/ちびAppearanceミクVer1_51.pmx",
         floorOffset: [0, 5, 0],
         chrOffset: [0, 5, 0]
     },
