@@ -1,45 +1,81 @@
 const mmdsetUpData = {
-    "Tda式初音ミクV4X_Ver1.00":{
-        fname:"/Tda式初音ミクV4X_Ver1.00.pmx",
-        author:"TDA",
+    "Tda式初音ミクV4X_Ver1.00": {
+        fname: "/Tda式初音ミクV4X_Ver1.00.pmx",
+        author: "TDA",
         floorOffset: [0, 0, 0],
         chrOffset: [0, 0, 0]
     },
-    "Tda式初音ミク・アペンドVer1.10":{
-        fname:"/Tda式初音ミク・アペンド_Ver1.10.pmx",
-        author:"TDA",
+    "Tda式初音ミク・アペンドVer1.10": {
+        fname: "/Tda式初音ミク・アペンド_Ver1.10.pmx",
+        author: "TDA",
         floorOffset: [0, 0, 0],
         chrOffset: [0, 0, 0]
     },
     ApiMiku: {
-        fname:"/ちびAppearanceミクVer1_51.pmx",
+        fname: "/ちびAppearanceミクVer1_51.pmx",
         floorOffset: [0, 5, 0],
         chrOffset: [0, 5, 0]
     },
-    miku_v2: {
-        fname:"/miku_v2.pmd",
+    "School Uniform Miku":{
+        fname: "/School Uniform Miku.pmx",
         floorOffset: [0, 0, 0],
         chrOffset: [0, 0, 0]
     },
-    songParams:{
-        wavefile:{
-            fname:"wavefile_shorts",
-            vmd:"/wavefile_v2.vmd",
-            cam:"/wavefile_camera.vmd",
-            song:"/wavefile_short.mp3",
-            author:"ラマーズP(LamazeP)",
-            artist:"初音ミク",
-            vocalTranner:"[Unknown]",
-            delayTime:5.33
+    miku_v2: {
+        fname: "/miku_v2.pmd",
+        floorOffset: [0, 0, 0],
+        chrOffset: [0, 0, 0]
+    },
+    songParams: {
+        wavefile: {
+            fname: "wavefile_shorts",
+            vmd: "/wavefile_v2.vmd",
+            cam: "/wavefile_camera.vmd",
+            song: "/wavefile_short.mp3",
+            vmdAuthor: "ラマーズP(LamazeP)",
+            camAuthor: "ラマーズP(LamazeP)",
+            author: "ラマーズP(LamazeP)",
+            artist: "初音ミク",
+            delayTime: 5.33
         },
-        Rough:{
-            fname:"GFRIEND_Rough",
-            vmd:"/GFRIEND_Rough.vmd",
-            cam:"/GFRIEND_Rough_Camera.vmd",
-            song:"/GFRIEND_Rough.wav",
-            author:"[Unknown Author]",
-            artist:"여자친구",
-            delayTime:0
+        Rough: {
+            fname: "GFRIEND_Rough",
+            koName: "유리구슬",
+            vmd: "/GFRIEND_Rough.vmd",
+            cam: "/GFRIEND_Rough_Camera.vmd",
+            song: "/GFRIEND_Rough.wav",
+            vmdAuthor: "[Unknown Author]",
+            camAuthor: "[Unknown Author]",
+            author: "[Unknown Author]",
+            artist: "Girlfriend",
+            koArtist: "여자친구",
+            delayTime: 0
+        },
+
+        君色に染まる: {
+            fname: "君色に染まる",
+            koName: "너의 색으로 물들어",
+            vmd: "/モーション_大.vmd",
+            cam: "/カメラ.vmd",
+            song: "/[Miku] 君色に染まる ver Kor.wav",
+            vmdAuthor: "足太ぺんたさん",
+            camAuthor: "IcyFox",
+            author: "[Unknown Author]",
+            vocalTranner: "sodadayo20",
+            artist: "初音ミク",
+            delayTime: 0
+        },
+        LIKEY: {
+            fname: "TWICE_LIKEY",
+            vmd: "/TWICE_LIKEY.vmd",
+            cam: "/Likey Camera Motion by Ayano01Tateyama.vmd",
+            song: "/TWICE_LIKEY.wav",
+            vmdAuthor: "[Unknown Author]",
+            camAuthor: "Ayano01Tateyama",
+            author: "sodadayo20",
+            artist: "TWICE",
+            koArtist: "트와이스",
+            delayTime: 0
         }
     }
 }

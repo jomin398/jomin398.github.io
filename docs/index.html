@@ -42,18 +42,7 @@
     <script src="./assets/models/mmd/setup.js"></script>
     <script src="./js/homepage.js"></script>
   </header>
-  <div id="setup">
-    <!-- <label>Choose a charactor:</label>
-    <select id="characters">
-      <option id="0" selected>miku_v2</option>
-      <option id="1">ApiMiku</option>
-    </select>
-    <label>Choose a song:</label>
-    <select id="songs">
-      <option id="0" selected>wavefile</option>
-      <option id="1">Rough</option>
-    </select> -->
-  </div>
+  <div id="setup"></div>
   <div class="overlay" id="startButton">
     <button id="startButton">Play</button>
   </div>
@@ -70,43 +59,7 @@
   </div>
   <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/js/libs/ammo.wasm.js"></script>
   <script type="module">
-    function pageInit() {
-      let chrlist = Object.keys(mmdsetUpData).slice(0, -1);
-      let songlist = Object.keys(mmdsetUpData.songParams);
-      let chrSelectWraper = document.createElement("select");
-      chrSelectWraper.id = "characters";
-      for (let i in chrlist) {
-        let choices = document.createElement("option");
-        choices.id = i;
-        choices.innerText = chrlist[i];
-        if (i == 0) {
-          choices.setAttribute('selected', 'selected');
-        }
-        chrSelectWraper.appendChild(choices);
-      }
-
-      let songSelectWraper = document.createElement("select");
-      songSelectWraper.id = "songs";
-      for (let i in songlist) {
-        let choices = document.createElement("option");
-        choices.id = i;
-        choices.innerText = songlist[i];
-        if (i == 0) {
-          choices.setAttribute('selected', 'selected');
-        }
-        songSelectWraper.appendChild(choices);
-      }
-
-      document.getElementById("setup").append(
-        document.createElement("label").innerText = "Choose a charactor : ",
-        chrSelectWraper,
-        document.createElement("br"),
-        document.createElement("label").innerText = "Choose a song : ",
-        songSelectWraper
-      )
-    }
     pageInit();
-
     // Find the latest version by visiting https://cdn.skypack.dev/three.
     import * as THREE from 'https://cdn.skypack.dev/three@v0.130.0';
     import {
@@ -120,7 +73,8 @@
     } from 'https://cdn.skypack.dev/three@v0.130.0/examples/jsm/animation/MMDAnimationHelper.js'; //'./jsm/animation/MMDAnimationHelper.js';
 
     let mesh, camera, scene, renderer, effect;
-    let helper;
+    let helper, ikHelper, physicsHelper;
+    let stats;
     let ready = false;
     const clock = new THREE.Clock();
     const startButton = document.getElementById('startButton');
@@ -143,7 +97,7 @@
     import {
       Sky
     } from 'https://cdn.skypack.dev/three@v0.130.0/examples/jsm/objects/Sky.js';
-
+    import Stats from 'https://cdn.skypack.dev/three@v0.130.0/examples/jsm/libs/stats.module.js';
     let sky, sun;
 
     function initSky() {
@@ -156,8 +110,10 @@
       sun = new THREE.Vector3();
 
       /// GUI
-
       const effectController = {
+        sky: true,
+      }
+      const SkyEffectController = {
         turbidity: 10,
         rayleigh: 3,
         mieCoefficient: 0.005,
@@ -167,37 +123,72 @@
         exposure: renderer.toneMappingExposure,
         // outlineEffect: true
       };
+      const characterController = {
+        animation: true,
+        ik: true,
+        outline: true,
+        physics: true,
+        'show IK bones': false,
+        'show rigid bodies': false,
+        afterglow: 2.0
+      }
 
       function guiChanged() {
 
         const uniforms = sky.material.uniforms;
-        uniforms['turbidity'].value = effectController.turbidity;
-        uniforms['rayleigh'].value = effectController.rayleigh;
-        uniforms['mieCoefficient'].value = effectController.mieCoefficient;
-        uniforms['mieDirectionalG'].value = effectController.mieDirectionalG;
+        uniforms['turbidity'].value = SkyEffectController.turbidity;
+        uniforms['rayleigh'].value = SkyEffectController.rayleigh;
+        uniforms['mieCoefficient'].value = SkyEffectController.mieCoefficient;
+        uniforms['mieDirectionalG'].value = SkyEffectController.mieDirectionalG;
 
-        const phi = THREE.MathUtils.degToRad(90 - effectController.elevation);
-        const theta = THREE.MathUtils.degToRad(effectController.azimuth);
+        const phi = THREE.MathUtils.degToRad(90 - SkyEffectController.elevation);
+        const theta = THREE.MathUtils.degToRad(SkyEffectController.azimuth);
 
         sun.setFromSphericalCoords(1, phi, theta);
 
         uniforms['sunPosition'].value.copy(sun);
 
-        renderer.toneMappingExposure = effectController.exposure;
+        renderer.toneMappingExposure = SkyEffectController.exposure;
+        if (effectController.sky == false) {
+          scene.remove(sky)
+        };
         renderer.render(scene, camera);
-
       }
 
       const gui = new GUI();
+      const bkSky = gui.addFolder('backgroud Sky Setup');
+      bkSky.add(SkyEffectController, 'turbidity', 0.0, 20.0, 0.1).onChange(guiChanged);
+      bkSky.add(SkyEffectController, 'rayleigh', 0.0, 4, 0.001).onChange(guiChanged);
+      bkSky.add(SkyEffectController, 'mieCoefficient', 0.0, 0.1, 0.001).onChange(guiChanged);
+      bkSky.add(SkyEffectController, 'mieDirectionalG', 0.0, 1, 0.001).onChange(guiChanged);
+      bkSky.add(SkyEffectController, 'elevation', 0, 90, 0.1).onChange(guiChanged);
+      bkSky.add(SkyEffectController, 'azimuth', -180, 180, 0.1).onChange(guiChanged);
+      bkSky.add(SkyEffectController, 'exposure', 0, 1, 0.0001).onChange(guiChanged);
 
-      gui.add(effectController, 'turbidity', 0.0, 20.0, 0.1).onChange(guiChanged);
-      gui.add(effectController, 'rayleigh', 0.0, 4, 0.001).onChange(guiChanged);
-      gui.add(effectController, 'mieCoefficient', 0.0, 0.1, 0.001).onChange(guiChanged);
-      gui.add(effectController, 'mieDirectionalG', 0.0, 1, 0.001).onChange(guiChanged);
-      gui.add(effectController, 'elevation', 0, 90, 0.1).onChange(guiChanged);
-      gui.add(effectController, 'azimuth', -180, 180, 0.1).onChange(guiChanged);
-      gui.add(effectController, 'exposure', 0, 1, 0.0001).onChange(guiChanged);
-      // gui.add(effectController, 'outlineEffect').onChange(guiChanged);
+      const chrSetup = gui.addFolder('character Visual Setup');
+      chrSetup.add(characterController, 'animation').onChange(function () {
+        helper.enable('animation', characterController.animation);
+      });
+      chrSetup.add(characterController, 'ik').onChange(function () {
+        helper.enable('ik', characterController.ik);
+      });
+      chrSetup.add(characterController, 'outline').onChange(function () {
+        effect.enabled = characterController.outline;
+      });
+      chrSetup.add(characterController, 'physics').onChange(function () {
+        helper.enable('physics', characterController.physics);
+      });
+      chrSetup.add(characterController, 'show IK bones').onChange(function () {
+        ikHelper.visible = characterController['show IK bones'];
+      });
+      chrSetup.add(characterController, 'show rigid bodies').onChange(function () {
+        if (physicsHelper !== undefined) physicsHelper.visible = characterController['show rigid bodies'];
+      });
+      chrSetup.add(characterController, "afterglow", 0, 10, 0.01).onChange(function () {
+
+        helper.afterglow = characterController.afterglow;
+      })
+      gui.add(effectController, 'sky').onChange(guiChanged);
       guiChanged();
 
     }
@@ -255,6 +246,15 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
       container.appendChild(renderer.domElement);
       effect = new OutlineEffect(renderer);
+
+      // STATS
+
+      stats = new Stats();
+      const fpsDisplay = document.createElement("div");
+      fpsDisplay.id = "fps";
+      fpsDisplay.appendChild(stats.dom);
+      container.appendChild(fpsDisplay);
+
       // model
       function onProgress(xhr) {
         if (xhr.lengthComputable) {
@@ -290,6 +290,16 @@
           animation: mmd.animation,
           physics: true
         });
+
+        //ik helper
+        ikHelper = helper.objects.get(mesh).ikSolver.createHelper();
+        ikHelper.visible = false;
+        scene.add(ikHelper);
+        //physics helper
+        physicsHelper = helper.objects.get(mesh).physics.createHelper();
+        physicsHelper.visible = false;
+        scene.add(physicsHelper);
+
         // scene.position.set(0,5,0); // offset;
         loader.loadAnimation(cameraFiles, camera, function (cameraAnimation) {
           helper.add(camera, {
@@ -330,7 +340,9 @@
     function animate() {
       document.querySelector("div#info").style.display = "block";
       requestAnimationFrame(animate);
+      stats.begin();
       render();
+      stats.end();
     }
 
     function render() {

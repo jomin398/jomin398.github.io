@@ -10,6 +10,7 @@
     font-weight: bold;
     padding: 14px 16px;
 }
+
 .batteryOuter {
     border-radius: 3px;
     border: 1px solid #8b8b8b;
@@ -18,6 +19,7 @@
     height: 9px;
     text-shadow: none;
 }
+
 .batteryBump {
     border-radius: 2px;
     background-color: #8b8b8b;
@@ -40,10 +42,12 @@
     width: 25px;
     height: 9px;
 }
-#batteryLevel i#onerror{
+
+#batteryLevel i#onerror {
     color: darkgoldenrod;
     position: relative;
 }
+
 @media screen and (max-width: 500px) {
     .mein-header.responsive ul li a.batteryContainer {
         display: flex;

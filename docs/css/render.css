@@ -1,94 +1,117 @@
 button {
-	cursor: pointer;
-	text-transform: uppercase;
+    cursor: pointer;
+    text-transform: uppercase;
 }
 
 #info {
-	display: none;
-	position: absolute;
-	top: 50px;
-	width: 100%;
-	padding: 10px;
-	box-sizing: border-box;
-	text-align: center;
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	pointer-events: none;
-	z-index: 1; /* TODO Solve this in HTML */
-	color: #F00082;
-  	letter-spacing: 2px;
-  	text-shadow:
-      -1px -1px 0 #cacaca,
-      1px -1px 0 #cacaca,
-      -1px 1px 0 #cacaca,
-      1px 1px 0 #cacaca;
-}
-#info a {
-	color: #F00082;
-  	letter-spacing: 2px;
-  	text-shadow:
-      -1px -1px 0 #cacaca,
-      1px -1px 0 #cacaca,
-      -1px 1px 0 #cacaca,
-      1px 1px 0 #cacaca;
-	text-decoration: none;
+    display: none;
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: center;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+    z-index: 1;
+    /* TODO Solve this in HTML */
+    color: #F00082;
+    letter-spacing: 2px;
+    text-shadow:
+        -1px -1px 0 #cacaca,
+        1px -1px 0 #cacaca,
+        -1px 1px 0 #cacaca,
+        1px 1px 0 #cacaca;
 }
 
-a, button, input, select {
-	pointer-events: auto;
+#info a {
+    color: #F00082;
+    letter-spacing: 2px;
+    text-shadow:
+        -1px -1px 0 #cacaca,
+        1px -1px 0 #cacaca,
+        -1px 1px 0 #cacaca,
+        1px 1px 0 #cacaca;
+    text-decoration: none;
+}
+
+a,
+button,
+input,
+select {
+    pointer-events: auto;
 }
 
 .dg.ac {
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	z-index: 2 !important; /* TODO Solve this in HTML */
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    z-index: 2 !important;
+    /* TODO Solve this in HTML */
 }
-#setup{
+
+#setup {
     position: relative;
     z-index: 3;
 }
+
 .overlay {
-	position: absolute;
-	font-size: 16px;
-	/* z-index: 2; */
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-	/* background: rgba(0,0,0,0.7); */
+    position: absolute;
+    font-size: 16px;
+    /* z-index: 2; */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    /* background: rgba(0,0,0,0.7); */
 }
 
-	.overlay button {
-		background: transparent;
-		border: 0;
-		border: 1px solid rgb(255, 255, 255);
-		border-radius: 4px;
-		color: #ffffff;
-		padding: 12px 18px;
-		text-transform: uppercase;
-		cursor: pointer;
-	}
+.overlay button {
+    background: transparent;
+    border: 0;
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 4px;
+    color: #ffffff;
+    padding: 12px 18px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
 
-	.overlay#stopButton{
-		z-index: 2;
-		position: absolute;
-		margin-top: 20%;
-		display: none;
-		background: transparent;
-		/* position: relative; */
-	}
+.overlay#stopButton {
+    z-index: 2;
+    position: absolute;
+    margin-top: 20%;
+    display: none;
+    background: transparent;
+    /* position: relative; */
+}
+
 #notSupported {
-	width: 50%;
-	margin: auto;
-	background-color: #f00;
-	margin-top: 20px;
-	padding: 10px;
+    width: 50%;
+    margin: auto;
+    background-color: #f00;
+    margin-top: 20px;
+    padding: 10px;
+}
+
+div#fps div {
+    position: absolute !important;
+    left: 55% !important;
+    font-size: 15px !important;
+}
+
+@media screen and (max-width: 500px) {
+    div#fps div {
+        font-size: 15px !important;
+        top: 18% !important;
+        left: 0 !important;
+    }
 }

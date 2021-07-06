@@ -26,14 +26,13 @@ docs/
 		- [alert](docs/assets/voice/0016.mp3)
 		- [Notification sound](docs/assets/voice/0017.mp3)
   2. models/
-      - mmd/
+    - mmd/
       - miku_v2
       - ちびミク (あぴミク)
       - Tda式初音ミク・アペンドVer1.10 (by [TDA](https://seiga.nicovideo.jp/seiga/im2018614))
-      - songs/
-        - wavefile_shorts (default)
-        - GFRIEND_Rough
-        - GFRIEND_Rough_Camera.vmd ([by 吴欢](https://youtu.be/bZmOOARIlO8))
+    - songs/
+      - wavefile_shorts (default)
+      - more on [here](docs/assets/models/songs)
 	3. img/ (not used)
 2. js/ (javascripts for html)
 3. css/
