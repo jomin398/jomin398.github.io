@@ -34,20 +34,21 @@ const mmdsetUpData = {
             song: "/wavefile_short.mp3",
             vmdAuthor: "ラマーズP(LamazeP)",
             camAuthor: "ラマーズP(LamazeP)",
+            vocalTranner: "ラマーズP(LamazeP)",
             author: "ラマーズP(LamazeP)",
             artist: "初音ミク",
             delayTime: 5.33
         },
         Rough: {
             fname: "GFRIEND_Rough",
-            koName: "유리구슬",
+            koName: "시간을 달려서",
             vmd: "/GFRIEND_Rough.vmd",
             cam: "/GFRIEND_Rough_Camera.vmd",
             song: "/GFRIEND_Rough.wav",
             vmdAuthor: "[Unknown Author]",
             camAuthor: "[Unknown Author]",
-            author: "[Unknown Author]",
-            artist: "Girlfriend",
+            author: "Su Ho Leem / Yong Bae Seo",
+            artist: "GFRIEND",
             koArtist: "여자친구",
             delayTime: 0
         },
@@ -55,9 +56,9 @@ const mmdsetUpData = {
         君色に染まる: {
             fname: "君色に染まる",
             koName: "너의 색으로 물들어",
-            vmd: "/モーション_大.vmd",
-            cam: "/カメラ.vmd",
-            song: "/[Miku] 君色に染まる ver Kor.wav",
+            vmd: "/modelBig.vmd",
+            cam: "/camera.vmd",
+            song: "/君色に染まる_Miku ver Kor.wav",
             vmdAuthor: "足太ぺんたさん",
             camAuthor: "IcyFox",
             author: "[Unknown Author]",
@@ -76,6 +77,18 @@ const mmdsetUpData = {
             artist: "TWICE",
             koArtist: "트와이스",
             delayTime: 0
+        },
+        "Tell Your World":{
+            fname: "Tell_Your_World",
+            vmd: "/TellYourWorldMotion.vmd",
+            cam: "/TellYourWorldCameraMotion.vmd",
+            song: "/Tell Your World (Korean Cover by sodadayo20).mp3",
+            vmdAuthor: "[Unknown Author]",
+            camAuthor: "[Unknown Author]",
+            vocalTranner: "sodadayo20",
+            author: "Livetune",
+            artist: "初音ミク",
+            delayTime: 1.3
         }
     }
 }

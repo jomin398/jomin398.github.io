@@ -112,6 +112,14 @@
       /// GUI
       const effectController = {
         sky: true,
+        fpsShow: true,
+        infoShow: true,
+        'physics Reset': function () {
+          helper.enable('physics', false);
+          setTimeout(() => {
+            helper.enable('physics', true);
+          }, 200);
+        }
       }
       const SkyEffectController = {
         turbidity: 10,
@@ -149,9 +157,20 @@
         uniforms['sunPosition'].value.copy(sun);
 
         renderer.toneMappingExposure = SkyEffectController.exposure;
-        if (effectController.sky == false) {
+        if (!effectController.sky) {
           scene.remove(sky)
-        };
+        }
+
+        if (!effectController.fpsShow) {
+          document.getElementById('fps').style.display = 'none';
+        } else {
+          document.getElementById('fps').style.display = 'block';
+        }
+        if (!effectController.infoShow) {
+          document.getElementById('info').style.display = 'none';
+        } else {
+          document.getElementById('info').style.display = 'block';
+        }
         renderer.render(scene, camera);
       }
 
@@ -185,10 +204,12 @@
         if (physicsHelper !== undefined) physicsHelper.visible = characterController['show rigid bodies'];
       });
       chrSetup.add(characterController, "afterglow", 0, 10, 0.01).onChange(function () {
-
         helper.afterglow = characterController.afterglow;
       })
       gui.add(effectController, 'sky').onChange(guiChanged);
+      gui.add(effectController, 'fpsShow').onChange(guiChanged);
+      gui.add(effectController, 'infoShow').onChange(guiChanged);
+      gui.add(effectController, 'physics Reset');
       guiChanged();
 
     }
@@ -273,6 +294,7 @@
       const audioFile = 'assets/models/songs/' + songParams.fname + songParams.song;
       console.log(audioFile)
       displaySongInfo(songname, songParams, chrChoiced);
+      document.querySelector("div#info").style.display = "block";
       // !! delay unit is sec. !!
       // see more https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode/start
       const audioParams = {
@@ -338,7 +360,6 @@
     }
     //
     function animate() {
-      document.querySelector("div#info").style.display = "block";
       requestAnimationFrame(animate);
       stats.begin();
       render();

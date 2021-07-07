@@ -18,21 +18,22 @@ Voices by : Icemo-P (アイス芋P) & Sodadayo20
 ### files
 docs/
 1. assets/
-  1. voice/ (are Japanese)
-	  - [今は (now is)](docs/assets/voice/0000.mp3)
-		- [1](docs/assets/voice/0001.mp3) ~ [9](docs/assets/voice/0009.mp3)
-		- [10](docs/assets/voice/0010.mp3) ~ [50](docs/assets/voice/0014.mp3)
-		- [パーセントです(N percent.)](docs/assets/voice/0015.mp3)
-		- [alert](docs/assets/voice/0016.mp3)
-		- [Notification sound](docs/assets/voice/0017.mp3)
-  2. models/
-    - mmd/
-      - miku_v2
-      - ちびミク (あぴミク)
-      - Tda式初音ミク・アペンドVer1.10 (by [TDA](https://seiga.nicovideo.jp/seiga/im2018614))
-    - songs/
-      - wavefile_shorts (default)
-      - more on [here](docs/assets/models/songs)
-	3. img/ (not used)
+    1. voice/ (are Japanese)
+        - [今は (now is)](docs/assets/voice/0000.mp3)
+        - [1](docs/assets/voice/0001.mp3) ~ [9](docs/assets/voice/0009.mp3)
+        - [10](docs/assets/voice/0010.mp3) ~ [50](docs/assets/voice/0014.mp3)
+        - [パーセントです(N percent.)](docs/assets/voice/0015.mp3)
+        - [alert](docs/assets/voice/0016.mp3)
+        - [Notification sound](docs/assets/voice/0017.mp3)
+    2. models/
+        - mmd/
+          - miku_v2
+          - ちびミク (あぴミク)
+          - Tda式初音ミク・アペンドVer1.10 (by [TDA](https://seiga.nicovideo.jp/seiga/im2018614))
+          - Tda式初音ミクV4X_Ver1.00 (by TDA)
+        - songs/
+          - wavefile_shorts (default)
+          - more on [here](docs/assets/models/songs)
+  3. img/ (not used)
 2. js/ (javascripts for html)
 3. css/
