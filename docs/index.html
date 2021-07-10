@@ -175,43 +175,8 @@
       }
 
       const gui = new GUI();
-      const bkSky = gui.addFolder('backgroud Sky Setup');
-      bkSky.add(SkyEffectController, 'turbidity', 0.0, 20.0, 0.1).onChange(guiChanged);
-      bkSky.add(SkyEffectController, 'rayleigh', 0.0, 4, 0.001).onChange(guiChanged);
-      bkSky.add(SkyEffectController, 'mieCoefficient', 0.0, 0.1, 0.001).onChange(guiChanged);
-      bkSky.add(SkyEffectController, 'mieDirectionalG', 0.0, 1, 0.001).onChange(guiChanged);
-      bkSky.add(SkyEffectController, 'elevation', 0, 90, 0.1).onChange(guiChanged);
-      bkSky.add(SkyEffectController, 'azimuth', -180, 180, 0.1).onChange(guiChanged);
-      bkSky.add(SkyEffectController, 'exposure', 0, 1, 0.0001).onChange(guiChanged);
-
-      const chrSetup = gui.addFolder('character Visual Setup');
-      chrSetup.add(characterController, 'animation').onChange(function () {
-        helper.enable('animation', characterController.animation);
-      });
-      chrSetup.add(characterController, 'ik').onChange(function () {
-        helper.enable('ik', characterController.ik);
-      });
-      chrSetup.add(characterController, 'outline').onChange(function () {
-        effect.enabled = characterController.outline;
-      });
-      chrSetup.add(characterController, 'physics').onChange(function () {
-        helper.enable('physics', characterController.physics);
-      });
-      chrSetup.add(characterController, 'show IK bones').onChange(function () {
-        ikHelper.visible = characterController['show IK bones'];
-      });
-      chrSetup.add(characterController, 'show rigid bodies').onChange(function () {
-        if (physicsHelper !== undefined) physicsHelper.visible = characterController['show rigid bodies'];
-      });
-      chrSetup.add(characterController, "afterglow", 0, 10, 0.01).onChange(function () {
-        helper.afterglow = characterController.afterglow;
-      })
-      gui.add(effectController, 'sky').onChange(guiChanged);
-      gui.add(effectController, 'fpsShow').onChange(guiChanged);
-      gui.add(effectController, 'infoShow').onChange(guiChanged);
-      gui.add(effectController, 'physics Reset');
+      guiInit(gui, helper, guiChanged, SkyEffectController, characterController, effectController)
       guiChanged();
-
     }
     //end 
     function init() {
@@ -278,14 +243,16 @@
 
       // model
       function onProgress(xhr) {
-        if (xhr.lengthComputable) {
-          const percentComplete = xhr.loaded / xhr.total * 100;
-          console.log(Math.round(percentComplete, 2) + '% downloaded');
-        }
+        onXhrLoadLog(xhr);
       }
       console.log(mmdsetUpData.songParams[songname]);
       // files
       let songParams = mmdsetUpData.songParams[songname];
+      if (Object.keys(songParams).length === 0) {
+        console.log("songParams is null, self defined");
+        songParams = new songParamsSelfDefine('./assets/models/songs/',songname)
+        console.log(songParams);
+      }
       console.log(mmdsetUpData[chrChoiced].fname);
       const modelFile = 'assets/models/mmd/' + chrChoiced + mmdsetUpData[chrChoiced].fname;
       console.log(modelFile);

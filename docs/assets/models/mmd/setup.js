@@ -89,6 +89,7 @@ const mmdsetUpData = {
             author: "Livetune",
             artist: "初音ミク",
             delayTime: 1.3
-        }
+        },
+        Patchwork_Staccato:{}
     }
 }

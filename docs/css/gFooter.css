@@ -1,0 +1,38 @@
+  
+/*맨아래 설명칸*/
+#global-footer {
+    margin-top: 90%;
+    background: #39c5bb;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    padding: 10px 0;
+    height: 50%;
+    z-index: 0;
+}
+#global-footer nav.contact {
+    margin: 5px auto;
+    text-align: right;
+    ;
+}
+
+#global-footer nav.contact > a {
+    display: inline-block;
+    border-right: solid 1px #fff;
+    padding: 0 10px;
+    color: #fff;
+}
+
+#global-footer nav.contact > a:last-child {
+        border: 0;
+    }
+
+    #global-footer nav.contact > a:hover {
+        text-decoration: underline;
+    }
+    #global-footer .copyright {
+        width: 100%;
+        color: #fff;
+        font-size:1.2rem;
+        text-align: right;
+    }

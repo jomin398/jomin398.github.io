@@ -1,0 +1,121 @@
+Look at the axis of the upper and lower body parts.
+Notice that there is a method I use to make them slightly rotate.
+I start the X and Z axis as 0.000 and every 5 frames I change it.
+
+The first 15 frames
+frame 0
+X 0.000
+Y 0.000
+Z 0.000
+
+frame 5
+X 0.100
+Y 0.000
+Z 0.100
+
+frame 10
+X 0.200
+Y 0.000
+Z 0.200
+
+frame 15
+X 0.300
+Y 0.000
+Z 0.300
+
+For the rest of the frames I use a pattern such as this.
+
+frame 20
+X 0.200
+Y 0.000
+Z 0.300
+
+frame 25 
+X 0.100
+Y 0.000
+Z 0.300
+
+frame 30
+X 0.000
+Y 0.000
+Z 0.300
+
+frame 35
+X -0.100
+Y 0.000
+Z 0.300
+
+frame 40 
+X -0.200
+Y 0.000
+Z 0.300
+
+frame 45
+X -0.300
+Y 0.000
+Z 0.300
+
+frame 50
+X -0.300
+Y 0.000
+Z 0.200
+
+frame 55 
+X -0.300
+Y 0.000
+Z 0.100
+
+frame 60
+X -0.300
+Y 0.000
+Z 0.000
+
+frame 65 
+X -0.300
+Y 0.000
+Z -0.100
+
+frame 70
+X -0.300
+Y 0.000
+Z -0.200
+
+frame 75
+X -0.300
+Y 0.000
+Z -0.300
+
+frame 80
+X -0.200
+Y 0.000
+Z -0.300
+
+frame 85
+X -0.100
+Y 0.000
+Z -0.300
+
+frame 90
+X 0.000
+Y 0.000
+Z -0.300
+
+
+I think you see the pattern. This pattern can be done on either the upper body bone or lower body bone. However, the opposite bone will need to go in the opposite direction. For example if you place this pattern on the upper body bone, the lower body bone will need to go in the opposite direction.
+
+So instead of starting with
+X 0.300
+Y 0.000
+Z 0.300
+on the 15th frame, you would have
+X -0.300
+Y 0.000
+Z -0.300
+on the 15th frame and go backwards from the first pattern.
+
+In regard the center bone, you register it at its initial position at the beginning of the frames, and at the end of the frames. In the middle of the beginning and end place 2 or 3 slight movements.
+
+Z 0.100 at about 33% into the total frames and Z -0.100 at about the 66% mark. This creates a very slight swaying motion back and forth.
+You can do the same on the X and or Y movement.
+
+Remember to randomly register blinking and subtle eye movements as well as arm movements to math your body movement to avoid a stiff appearance.

@@ -1,3 +1,10 @@
+function LinkCheck(url) {
+  var http = new XMLHttpRequest();
+  http.open('HEAD', url, false);
+  http.send();
+  return http.status != 404;
+}
+const FileCheack = (url) => LinkCheck(url);
 function menuSwap(arr) {
   if (!arr) {
     throw new ReferenceError("arr is cannot be null.")
@@ -118,4 +125,94 @@ function pageInit() {
     .append(document.createElement("label")
       .innerText = "Choose a charactor : ", chrSelectWraper, document.createElement("br"), document.createElement("label")
         .innerText = "Choose a song : ", songSelectWraper)
+}
+
+function guiInit(gui, helper, guiChanged, SKE, chrC, efC) {
+  const bkSky = gui.addFolder('backgroud Sky Setup');
+  bkSky.add(SKE, 'turbidity', 0.0, 20.0, 0.1).onChange(guiChanged);
+  bkSky.add(SKE, 'rayleigh', 0.0, 4, 0.001).onChange(guiChanged);
+  bkSky.add(SKE, 'mieCoefficient', 0.0, 0.1, 0.001).onChange(guiChanged);
+  bkSky.add(SKE, 'mieDirectionalG', 0.0, 1, 0.001).onChange(guiChanged);
+  bkSky.add(SKE, 'elevation', 0, 90, 0.1).onChange(guiChanged);
+  bkSky.add(SKE, 'azimuth', -180, 180, 0.1).onChange(guiChanged);
+  bkSky.add(SKE, 'exposure', 0, 1, 0.0001).onChange(guiChanged);
+
+  const chrSetup = gui.addFolder('character Visual Setup');
+  chrSetup.add(chrC, 'animation').onChange(function () {
+    helper.enable('animation', chrC.animation);
+  });
+  chrSetup.add(chrC, 'ik').onChange(function () {
+    helper.enable('ik', chrC.ik);
+  });
+  chrSetup.add(chrC, 'outline').onChange(function () {
+    effect.enabled = chrC.outline;
+  });
+  chrSetup.add(chrC, 'physics').onChange(function () {
+    helper.enable('physics', chrC.physics);
+  });
+  chrSetup.add(chrC, 'show IK bones').onChange(function () {
+    ikHelper.visible = chrC['show IK bones'];
+  });
+  chrSetup.add(chrC, 'show rigid bodies').onChange(function () {
+    if (physicsHelper !== undefined) physicsHelper.visible = chrC['show rigid bodies'];
+  });
+  chrSetup.add(chrC, "afterglow", 0, 10, 0.01).onChange(function () {
+    helper.afterglow = chrC.afterglow;
+  })
+  gui.add(efC, 'sky').onChange(guiChanged);
+  gui.add(efC, 'fpsShow').onChange(guiChanged);
+  gui.add(efC, 'infoShow').onChange(guiChanged);
+  gui.add(efC, 'physics Reset');
+};
+function onXhrLoadLog(xhr) {
+  if (xhr.lengthComputable) {
+    const percentComplete = xhr.loaded / xhr.total * 100;
+    const precent = Math.round(percentComplete, 2);
+    const reqName = xhr.target.responseURL;
+    const fType = reqName.replace(/.*\/assets\/(models\/)?(mmd|songs)?\/(.*)/gm, "$2");
+    const fName = decodeURI(reqName.replace(/.*\/assets\/(models\/)?(mmd|songs)?\/(.*)/gm, "$3"));
+    console.log(fType + " -> " + fName + " is " + precent + '% downloaded');
+  }
+}
+function songParamsSelfDefine(rf, sn) {
+  this.fname = null;
+  this.vmd = null;
+  this.cam = null;
+  this.song = null;
+  this.vmdAuthor = null;
+  this.camAuthor = null;
+  this.vocalTranner = null;
+  this.author = null;
+  this.artist = null;
+  this.delayTime = 0;
+
+  let http = new XMLHttpRequest();
+  let songFolder = rf + sn;
+  http.open('HEAD', songFolder, false);
+  http.send();
+  let resp = http.response;
+  let iscam = (el) => el.includes("Camera") || el.includes("camera");
+  let isMotion = (el) => el.includes("Motion") || el.includes("motion");
+  let isSong = (el) => el.includes(".mp3") || el.includes(".wav");
+  // parse responce to make folder list
+  if (resp.includes("addRow")) {
+    //folder list
+    let list = resp.split("addRow").splice(2, 3).map(e =>
+      e.split(',')[0].split('(\"')[1].split('\"')[0]).filter(e => e.indexOf(".txt") == -1);
+    
+    //make tempate;
+    this.fname = sn;
+    this.vmd = "/" + list.filter(e => isMotion(e));
+    this.cam = "/" + list.filter(e => iscam(e));
+    this.song = "/" + list.filter(e => isSong(e));
+    this.vmdAuthor = "[Unknown Author]";
+    this.camAuthor = "[Unknown Author]";
+    this.vocalTranner = "[Unknown Author]";
+    this.author = "[Unknown Author]";
+    this.artist = "[Unknown Artist]";
+    this.delayTime = 0;
+  } else {
+    alert("Sorry, " + sn + " is Unsupport song. :(");
+    throw new InternalError("Unsupport song, " + sn);
+  }
 }
