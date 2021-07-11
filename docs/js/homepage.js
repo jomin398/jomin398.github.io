@@ -74,7 +74,7 @@ function bmsInit(str) {
 function onBMSSetupChange() {
   document.querySelector(".mein-header ul li a.batteryContainer")
     .dataset.useInternalBms = document.querySelector(".dropdown label input")
-    .checked;
+      .checked;
   bmsInit("RE ");
 }
 
@@ -125,10 +125,10 @@ function pageInit() {
   document.getElementById("setup")
     .append(document.createElement("label")
       .innerText = "Choose a charactor : ", chrSelectWraper, document.createElement("br"), document.createElement("label")
-      .innerText = "Choose a song : ", songSelectWraper)
+        .innerText = "Choose a song : ", songSelectWraper)
 }
 
-function guiInit(gui, helper, guiChanged, SKE, chrC, efC) {
+function guiInit(gui, helper, ikHelper, physicsHelper, guiChanged, SKE, chrC, efC) {
   const bkSky = gui.addFolder('backgroud Sky Setup');
   bkSky.add(SKE, 'turbidity', 0.0, 20.0, 0.1).onChange(guiChanged);
   bkSky.add(SKE, 'rayleigh', 0.0, 4, 0.001).onChange(guiChanged);
@@ -139,25 +139,25 @@ function guiInit(gui, helper, guiChanged, SKE, chrC, efC) {
   bkSky.add(SKE, 'exposure', 0, 1, 0.0001).onChange(guiChanged);
 
   const chrSetup = gui.addFolder('character Visual Setup');
-  chrSetup.add(chrC, 'animation').onChange(function() {
+  chrSetup.add(chrC, 'animation').onChange(function () {
     helper.enable('animation', chrC.animation);
   });
-  chrSetup.add(chrC, 'ik').onChange(function() {
+  chrSetup.add(chrC, 'ik').onChange(function () {
     helper.enable('ik', chrC.ik);
   });
-  chrSetup.add(chrC, 'outline').onChange(function() {
+  chrSetup.add(chrC, 'outline').onChange(function () {
     effect.enabled = chrC.outline;
   });
-  chrSetup.add(chrC, 'physics').onChange(function() {
+  chrSetup.add(chrC, 'physics').onChange(function () {
     helper.enable('physics', chrC.physics);
   });
-  chrSetup.add(chrC, 'show IK bones').onChange(function() {
+  chrSetup.add(chrC, 'show IK bones').onChange(function () {
     ikHelper.visible = chrC['show IK bones'];
   });
-  chrSetup.add(chrC, 'show rigid bodies').onChange(function() {
+  chrSetup.add(chrC, 'show rigid bodies').onChange(function () {
     if (physicsHelper !== undefined) physicsHelper.visible = chrC['show rigid bodies'];
   });
-  chrSetup.add(chrC, "afterglow", 0, 10, 0.01).onChange(function() {
+  chrSetup.add(chrC, "afterglow", 0, 10, 0.01).onChange(function () {
     helper.afterglow = chrC.afterglow;
   })
   gui.add(efC, 'sky').onChange(guiChanged);
@@ -171,8 +171,9 @@ function onXhrLoadLog(xhr) {
     const percentComplete = xhr.loaded / xhr.total * 100;
     const precent = Math.round(percentComplete, 2);
     const reqName = xhr.target.responseURL;
-    const fType = reqName.replace(/.*\/assets\/(models\/)?(mmd|songs)?\/(.*)/gm, "$2");
-    const fName = decodeURI(reqName.replace(/.*\/assets\/(models\/)?(mmd|songs)?\/(.*)/gm, "$3"));
+    const reqNameLo = reqName.toLowerCase();
+    const fType = (['pmx', 'pmd'].indexOf(reqNameLo) != -1) ? "model" : (reqNameLo.includes("camera")) ? "camera Motion" : (reqNameLo.includes('motion')) ? "Model motion" : (['mp3', 'wav'].indexOf(reqName) != -1) ? "song" : "Unknown";
+    const fName = decodeURI(reqName.replace(/.*\/assets\/models\/(mmd|songs)?\/(.*)/gm, "$2"));
     console.log(fType + " -> " + fName + " is " + precent + '% downloaded');
   }
 }
@@ -241,5 +242,5 @@ function errorDisplay(data) {
   ei.onclick = this.parentElement.style.display = "none";
   eew.append(tnode);
   ee.appendChild(ei);
-  eew.append(ee,);
+  eew.append(ee);
 }
