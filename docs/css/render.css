@@ -115,3 +115,11 @@ div#fps div {
         left: 0 !important;
     }
 }
+body div:nth-child(7) canvas{
+    aspect-ratio: auto 1920 / 1080 !important;
+}
+#info a progress{
+    height: 1.2rem;
+    vertical-align: middle;
+    /* height: 1.2rem; */
+}

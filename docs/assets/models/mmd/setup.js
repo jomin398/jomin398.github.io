@@ -40,7 +40,7 @@ const mmdsetUpData = {
             delayTime: 5.33
         },
         Rough: {
-            fname: "GFRIEND_Rough",
+            fname: "GFRIEND - Rough",
             koName: "시간을 달려서",
             vmd: "/GFRIEND_Rough.vmd",
             cam: "/GFRIEND_Rough_Camera.vmd",
@@ -67,7 +67,7 @@ const mmdsetUpData = {
             delayTime: 0
         },
         LIKEY: {
-            fname: "TWICE_LIKEY",
+            fname: "TWICE - LIKEY",
             vmd: "/TWICE_LIKEY.vmd",
             cam: "/Likey Camera Motion by Ayano01Tateyama.vmd",
             song: "/TWICE_LIKEY.wav",
@@ -88,8 +88,43 @@ const mmdsetUpData = {
             vocalTranner: "sodadayo20",
             author: "Livetune",
             artist: "初音ミク",
-            delayTime: 1.3
+            delayTime: 2
         },
-        Patchwork_Staccato:{}
+        Patchwork_Staccato:{
+            fname: "Patchwork_Staccato",
+            vmd: "/PatchworkStaccato_motion.vmd",
+            cam: "/Camera by MMD kip.vmd",
+            song: "/pv_912.wav",
+            vmdAuthor: "[Unknown Author]",
+            camAuthor: "kip",
+            vocalTranner: "sodadayo20",
+            author: "Livetune",
+            artist: "初音ミク",
+            delayTime: 0
+        },
+        "Glass Bead":{
+            fname: "GFRIEND - Glass Bead",
+            vmd: "/Glass Bead - Motion [LadieAlien].vmd",
+            cam: "/Glass Bead - Camera [LadieAlien].vmd",
+            song: "/GFriend - Glass Bead.wav",
+            vmdAuthor: "[Unknown Author]",
+            camAuthor: "LadieAlien",
+            author: "[Unknown Author]",
+            artist: "GFRIEND",
+            koArtist: "여자친구",
+            delayTime: 0
+        },
+        "Roly poly":{
+            fname: "TARA - Roly poly",
+            vmd: "/Roly poly.vmd",
+            cam: "/Roly poly camera.vmd",
+            song: "/Roly Poly.wav",
+            vmdAuthor: "[Unknown Author]",
+            camAuthor: "[Unknown Author]",
+            author: "[Unknown Author]",
+            artist: "TARA",
+            koArtist: "티아라",
+            delayTime: 3
+        }
     }
 }

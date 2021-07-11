@@ -75,6 +75,7 @@
     let mesh, camera, scene, renderer, effect;
     let helper, ikHelper, physicsHelper;
     let stats;
+    let songStats;
     let ready = false;
     const clock = new THREE.Clock();
     const startButton = document.getElementById('startButton');
@@ -175,7 +176,41 @@
       }
 
       const gui = new GUI();
-      guiInit(gui, helper, ikHelper,  physicsHelper, guiChanged, SkyEffectController, characterController, effectController)
+      const bkSky = gui.addFolder('backgroud Sky Setup');
+      bkSky.add(SkyEffectController, 'turbidity', 0.0, 20.0, 0.1).onChange(guiChanged);
+      bkSky.add(SkyEffectController, 'rayleigh', 0.0, 4, 0.001).onChange(guiChanged);
+      bkSky.add(SkyEffectController, 'mieCoefficient', 0.0, 0.1, 0.001).onChange(guiChanged);
+      bkSky.add(SkyEffectController, 'mieDirectionalG', 0.0, 1, 0.001).onChange(guiChanged);
+      bkSky.add(SkyEffectController, 'elevation', 0, 90, 0.1).onChange(guiChanged);
+      bkSky.add(SkyEffectController, 'azimuth', -180, 180, 0.1).onChange(guiChanged);
+      bkSky.add(SkyEffectController, 'exposure', 0, 1, 0.0001).onChange(guiChanged);
+
+      const chrSetup = gui.addFolder('character Visual Setup');
+      chrSetup.add(characterController, 'animation').onChange(function () {
+        helper.enable('animation', characterController.animation);
+      });
+      chrSetup.add(characterController, 'ik').onChange(function () {
+        helper.enable('ik', characterController.ik);
+      });
+      chrSetup.add(characterController, 'outline').onChange(function () {
+        effect.enabled = characterController.outline;
+      });
+      chrSetup.add(characterController, 'physics').onChange(function () {
+        helper.enable('physics', characterController.physics);
+      });
+      chrSetup.add(characterController, 'show IK bones').onChange(function () {
+        ikHelper.visible = characterController['show IK bones'];
+      });
+      chrSetup.add(characterController, 'show rigid bodies').onChange(function () {
+        if (physicsHelper !== undefined) physicsHelper.visible = characterController['show rigid bodies'];
+      });
+      chrSetup.add(characterController, "afterglow", 0, 10, 0.01).onChange(function () {
+        helper.afterglow = characterController.afterglow;
+      })
+      gui.add(effectController, 'sky').onChange(guiChanged);
+      gui.add(effectController, 'fpsShow').onChange(guiChanged);
+      gui.add(effectController, 'infoShow').onChange(guiChanged);
+      gui.add(effectController, 'physics Reset');
       guiChanged();
     }
     //end 
@@ -224,7 +259,7 @@
       directionalLight.position.set(-1, 1, 1)
         .normalize();
       scene.add(directionalLight);
-      
+
       renderer = new THREE.WebGLRenderer({
         antialias: true
       });
@@ -249,9 +284,12 @@
       // files
       let songParams = mmdsetUpData.songParams[songname];
       if (Object.keys(songParams).length === 0) {
-        console.log("songParams is null, self defined");
-        songParams = new songParamsSelfDefine('./assets/models/songs/',songname)
-        console.log(songParams);
+        errorDisplay("Sorry, " + songname + " is Unsupport song. :(");
+        alert("Sorry, " + songname + " is Unsupport song. :(");
+        // let t = setTimeout(() => {
+        //   location.reload();
+        //   clearTimeout(t);
+        // }, 5000);
       }
       console.log(mmdsetUpData[chrChoiced].fname);
       const modelFile = 'assets/models/mmd/' + chrChoiced + mmdsetUpData[chrChoiced].fname;
@@ -298,6 +336,29 @@
             .load(audioFile, function (buffer) {
               const audio = new THREE.Audio(listener)
                 .setBuffer(buffer);
+              let pg = document.createElement("progress");
+              let pgn = document.createElement('a');
+              pgn.id = 'songDurarion';
+              pgn.append(document.createTextNode("Playing... : "));
+              console.log(audio);
+              let audioCurrentTime = audio.context.currentTime;
+              let audioDuration = audio.buffer.duration + 10;
+              let t = null;
+              pgn.appendChild(pg);
+              document.getElementById("info").append(document.createElement('br'), pgn);
+              console.log("timerRunning");
+              pg.value = 0;
+              pg.max = audioDuration;
+              t = setInterval(() => {
+                audioCurrentTime = audio.context.currentTime;
+                if (audioCurrentTime >= audioDuration) {
+                  console.log('end song');
+                  clearInterval(t);
+                  location.reload();
+                }
+                pg.value = Math.floor(audioCurrentTime);
+
+              }, 1000);
               helper.add(audio, audioParams);
               scene.add(mesh);
               ready = true;

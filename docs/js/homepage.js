@@ -128,102 +128,16 @@ function pageInit() {
         .innerText = "Choose a song : ", songSelectWraper)
 }
 
-function guiInit(gui, helper, ikHelper, physicsHelper, guiChanged, SKE, chrC, efC) {
-  const bkSky = gui.addFolder('backgroud Sky Setup');
-  bkSky.add(SKE, 'turbidity', 0.0, 20.0, 0.1).onChange(guiChanged);
-  bkSky.add(SKE, 'rayleigh', 0.0, 4, 0.001).onChange(guiChanged);
-  bkSky.add(SKE, 'mieCoefficient', 0.0, 0.1, 0.001).onChange(guiChanged);
-  bkSky.add(SKE, 'mieDirectionalG', 0.0, 1, 0.001).onChange(guiChanged);
-  bkSky.add(SKE, 'elevation', 0, 90, 0.1).onChange(guiChanged);
-  bkSky.add(SKE, 'azimuth', -180, 180, 0.1).onChange(guiChanged);
-  bkSky.add(SKE, 'exposure', 0, 1, 0.0001).onChange(guiChanged);
-
-  const chrSetup = gui.addFolder('character Visual Setup');
-  chrSetup.add(chrC, 'animation').onChange(function () {
-    helper.enable('animation', chrC.animation);
-  });
-  chrSetup.add(chrC, 'ik').onChange(function () {
-    helper.enable('ik', chrC.ik);
-  });
-  chrSetup.add(chrC, 'outline').onChange(function () {
-    effect.enabled = chrC.outline;
-  });
-  chrSetup.add(chrC, 'physics').onChange(function () {
-    helper.enable('physics', chrC.physics);
-  });
-  chrSetup.add(chrC, 'show IK bones').onChange(function () {
-    ikHelper.visible = chrC['show IK bones'];
-  });
-  chrSetup.add(chrC, 'show rigid bodies').onChange(function () {
-    if (physicsHelper !== undefined) physicsHelper.visible = chrC['show rigid bodies'];
-  });
-  chrSetup.add(chrC, "afterglow", 0, 10, 0.01).onChange(function () {
-    helper.afterglow = chrC.afterglow;
-  })
-  gui.add(efC, 'sky').onChange(guiChanged);
-  gui.add(efC, 'fpsShow').onChange(guiChanged);
-  gui.add(efC, 'infoShow').onChange(guiChanged);
-  gui.add(efC, 'physics Reset');
-};
-
 function onXhrLoadLog(xhr) {
   if (xhr.lengthComputable) {
     const percentComplete = xhr.loaded / xhr.total * 100;
     const precent = Math.round(percentComplete, 2);
     const reqName = xhr.target.responseURL;
-    const reqNameLo = reqName.toLowerCase();
-    const fType = (['pmx', 'pmd'].indexOf(reqNameLo) != -1) ? "model" : (reqNameLo.includes("camera")) ? "camera Motion" : (reqNameLo.includes('motion')) ? "Model motion" : (['mp3', 'wav'].indexOf(reqName) != -1) ? "song" : "Unknown";
+    
     const fName = decodeURI(reqName.replace(/.*\/assets\/models\/(mmd|songs)?\/(.*)/gm, "$2"));
+    const fNameLo = fName.toLowerCase();
+    const fType = (fNameLo.includes('.pmx')|fNameLo.includes( '.pmd')) ? "Character model" : (fNameLo.includes("camera")) ? "Camera motion" : (fNameLo.includes('motion')|fNameLo.includes('.vmd')) ? "Model motion" : (fNameLo.includes('.mp3')|fNameLo.includes('.wav')) ? "Song" : "Unknown";
     console.log(fType + " -> " + fName + " is " + precent + '% downloaded');
-  }
-}
-
-function songParamsSelfDefine(rf, sn) {
-  this.fname = null;
-  this.vmd = null;
-  this.cam = null;
-  this.song = null;
-  this.vmdAuthor = null;
-  this.camAuthor = null;
-  this.vocalTranner = null;
-  this.author = null;
-  this.artist = null;
-  this.delayTime = 0;
-
-  let songFolder, http, resp;
-  let iscam = (el) => el.includes("Camera") || el.includes("camera");
-  let isMotion = (el) => el.includes("Motion") || el.includes("motion");
-  let isSong = (el) => el.includes(".mp3") || el.includes(".wav");
-  http = new XMLHttpRequest();
-  songFolder = rf + sn;
-  try {
-    http.open('GET', songFolder, false);
-    http.send();
-    resp = http.response;
-    // parse responce to make folder list
-    console.log(resp)
-    if (resp.includes("addRow")) {
-      //folder list
-      let list = resp.split("addRow").splice(2, 3).map(e =>
-        e.split(',')[0].split('(\"')[1].split('\"')[0]).filter(e => e.indexOf(".txt") == -1);
-
-      //make tempate;
-      this.fname = sn;
-      this.vmd = "/" + list.filter(e => isMotion(e));
-      this.cam = "/" + list.filter(e => iscam(e));
-      this.song = "/" + list.filter(e => isSong(e));
-      this.vmdAuthor = "[Unknown Author]";
-      this.camAuthor = "[Unknown Author]";
-      this.vocalTranner = "[Unknown Author]";
-      this.author = "[Unknown Author]";
-      this.artist = "[Unknown Artist]";
-      this.delayTime = 0;
-    } else {
-      alert("Sorry, " + sn + " is Unsupport song. :(");
-      throw resp;
-    }
-  } catch (e) {
-    errorDisplay(e);
   }
 }
 
@@ -232,15 +146,15 @@ function errorDisplay(data) {
   let eew = document.createElement("div");
   eew.id = "errorWrapper";
   let tnode = document.createTextNode("Error Display");
-  tnode.onclick = this.parentElement.style.display = "none";
+  tnode.addEventListener("click", function(){document.getElementById("errorWrapper").style.display = "none"});
   let ee = document.createElement("div");
   ee.id = "display-error";
   let ttnode = document.createTextNode(data);
   ee.appendChild(ttnode)
   let ei = document.createElement("i");
   ei.className = "fas fa-exclamation-triangle";
-  ei.onclick = this.parentElement.style.display = "none";
   eew.append(tnode);
   ee.appendChild(ei);
   eew.append(ee);
+  document.body.appendChild(eew);
 }
