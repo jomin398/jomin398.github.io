@@ -196,7 +196,7 @@ function songParamsSelfDefine(rf, sn) {
   http = new XMLHttpRequest();
   songFolder = rf + sn;
   try {
-    http.open('HEAD', songFolder, false);
+    http.open('GET', songFolder, false);
     http.send();
     resp = http.response;
     // parse responce to make folder list
@@ -231,7 +231,7 @@ function errorDisplay(data) {
   let eew = document.createElement("div");
   eew.id = "errorWrapper";
   let tnode = document.createTextNode("Error Display");
-  tnode.onclick = document.getElementById("errorWrapper").style.display = "none";
+  tnode.onclick = this.parentElement.style.display = "none";
   let ee = document.createElement("div");
   ee.id = "display-error";
   let ttnode = document.createTextNode(data);
