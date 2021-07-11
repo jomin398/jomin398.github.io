@@ -109,7 +109,6 @@
       scene.add(sky);
 
       sun = new THREE.Vector3();
-
       /// GUI
       const effectController = {
         sky: true,
@@ -132,16 +131,21 @@
         exposure: renderer.toneMappingExposure,
         // outlineEffect: true
       };
+
       const characterController = {
         animation: true,
         ik: true,
         outline: true,
         physics: true,
-        'show IK bones': false,
-        'show rigid bodies': false,
+        showIKbones: false,
+        showRigids: false,
         afterglow: 2.0
       }
 
+      const Lcontrol = {
+        sun: false,
+        castShadow: false
+      }
       function guiChanged() {
 
         const uniforms = sky.material.uniforms;
@@ -154,14 +158,12 @@
         const theta = THREE.MathUtils.degToRad(SkyEffectController.azimuth);
 
         sun.setFromSphericalCoords(1, phi, theta);
-
+        sun.visible = Lcontrol.sun;
         uniforms['sunPosition'].value.copy(sun);
 
         renderer.toneMappingExposure = SkyEffectController.exposure;
-        if (!effectController.sky) {
-          scene.remove(sky)
-        }
 
+        sky.visible = effectController.sky;
         if (!effectController.fpsShow) {
           document.getElementById('fps').style.display = 'none';
         } else {
@@ -172,6 +174,13 @@
         } else {
           document.getElementById('info').style.display = 'block';
         }
+        //chrSetup
+        helper.enable('animation', characterController.animation);
+        helper.enable('ik', characterController.ik);
+        helper.enable('physics', characterController.physics);
+        helper.afterglow = characterController.afterglow;
+        effect.enabled = characterController.outline;
+        if (physicsHelper !== undefined) { physicsHelper.visible = characterController.showRigids };
         renderer.render(scene, camera);
       }
 
@@ -186,31 +195,30 @@
       bkSky.add(SkyEffectController, 'exposure', 0, 1, 0.0001).onChange(guiChanged);
 
       const chrSetup = gui.addFolder('character Visual Setup');
-      chrSetup.add(characterController, 'animation').onChange(function () {
-        helper.enable('animation', characterController.animation);
+      chrSetup.add(characterController, 'animation').onChange(guiChanged);
+      chrSetup.add(characterController, 'ik').onChange(guiChanged);
+      chrSetup.add(characterController, 'outline').onChange(guiChanged);
+      chrSetup.add(characterController, 'physics').onChange(guiChanged);
+      chrSetup.add(characterController, 'showIKbones').name('show IK bones').onChange(function () {
+        ikHelper.visible = characterController.showIKbones
       });
-      chrSetup.add(characterController, 'ik').onChange(function () {
-        helper.enable('ik', characterController.ik);
-      });
-      chrSetup.add(characterController, 'outline').onChange(function () {
-        effect.enabled = characterController.outline;
-      });
-      chrSetup.add(characterController, 'physics').onChange(function () {
-        helper.enable('physics', characterController.physics);
-      });
-      chrSetup.add(characterController, 'show IK bones').onChange(function () {
-        ikHelper.visible = characterController['show IK bones'];
-      });
-      chrSetup.add(characterController, 'show rigid bodies').onChange(function () {
-        if (physicsHelper !== undefined) physicsHelper.visible = characterController['show rigid bodies'];
-      });
-      chrSetup.add(characterController, "afterglow", 0, 10, 0.01).onChange(function () {
-        helper.afterglow = characterController.afterglow;
-      })
-      gui.add(effectController, 'sky').onChange(guiChanged);
+      chrSetup.add(characterController, 'showRigids').name('show rigid bodies').onChange(guiChanged);
+      chrSetup.add(characterController, "afterglow", 0, 10, 0.01).onChange(guiChanged);
+      const lightControl = gui.addFolder("light Control");
       gui.add(effectController, 'fpsShow').onChange(guiChanged);
       gui.add(effectController, 'infoShow').onChange(guiChanged);
       gui.add(effectController, 'physics Reset');
+      // ready
+      
+      lightControl.add(Lcontrol, 'sun').onChange(guiChanged);
+      // lightColorSet.add(Lcontrol, 'castShadow').name("Show Shadow").onChange(function (value) {
+      //   if (value) {
+      //     //myMmdLight.LightShadow();
+      //   } else {
+      //     //myMmdLight.LightNotShadow();
+
+      //   }
+      // });
       guiChanged();
     }
     //end 
@@ -281,6 +289,9 @@
         onXhrLoadLog(xhr);
       }
       console.log(mmdsetUpData.songParams[songname]);
+      // if(songname == 'Ray'){
+      //   helper.enable('ik', false);
+      // }
       // files
       let songParams = mmdsetUpData.songParams[songname];
       if (Object.keys(songParams).length === 0) {

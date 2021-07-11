@@ -125,6 +125,18 @@ const mmdsetUpData = {
             artist: "TARA",
             koArtist: "티아라",
             delayTime: 3
+        },
+        Ray:{
+            fname: "初音ミク - Ray",
+            vmd: "/ray_motion_Tda式初音ミク_盗賊つばき流MトレースモデルSPv1.08_表示枠整理_足全表示_20201225_144828.vmd",
+            cam: "/ray_Camera.vmd",
+            song: "/[Miku] Ray (Kor ver by sodadayo20).mp3",
+            vmdAuthor: "팔성이",
+            camAuthor: "Soell",
+            vocalTranner: "sodadayo20",
+            author: "BUMP OF CHICKEN",
+            artist: "初音ミク",
+            delayTime: 0.56
         }
     }
 }
