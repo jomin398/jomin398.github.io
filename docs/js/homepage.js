@@ -5,6 +5,7 @@ function LinkCheck(url) {
   return http.status != 404;
 }
 const FileCheack = (url) => LinkCheck(url);
+
 function menuSwap(arr) {
   if (!arr) {
     throw new ReferenceError("arr is cannot be null.")
@@ -73,7 +74,7 @@ function bmsInit(str) {
 function onBMSSetupChange() {
   document.querySelector(".mein-header ul li a.batteryContainer")
     .dataset.useInternalBms = document.querySelector(".dropdown label input")
-      .checked;
+    .checked;
   bmsInit("RE ");
 }
 
@@ -124,7 +125,7 @@ function pageInit() {
   document.getElementById("setup")
     .append(document.createElement("label")
       .innerText = "Choose a charactor : ", chrSelectWraper, document.createElement("br"), document.createElement("label")
-        .innerText = "Choose a song : ", songSelectWraper)
+      .innerText = "Choose a song : ", songSelectWraper)
 }
 
 function guiInit(gui, helper, guiChanged, SKE, chrC, efC) {
@@ -138,25 +139,25 @@ function guiInit(gui, helper, guiChanged, SKE, chrC, efC) {
   bkSky.add(SKE, 'exposure', 0, 1, 0.0001).onChange(guiChanged);
 
   const chrSetup = gui.addFolder('character Visual Setup');
-  chrSetup.add(chrC, 'animation').onChange(function () {
+  chrSetup.add(chrC, 'animation').onChange(function() {
     helper.enable('animation', chrC.animation);
   });
-  chrSetup.add(chrC, 'ik').onChange(function () {
+  chrSetup.add(chrC, 'ik').onChange(function() {
     helper.enable('ik', chrC.ik);
   });
-  chrSetup.add(chrC, 'outline').onChange(function () {
+  chrSetup.add(chrC, 'outline').onChange(function() {
     effect.enabled = chrC.outline;
   });
-  chrSetup.add(chrC, 'physics').onChange(function () {
+  chrSetup.add(chrC, 'physics').onChange(function() {
     helper.enable('physics', chrC.physics);
   });
-  chrSetup.add(chrC, 'show IK bones').onChange(function () {
+  chrSetup.add(chrC, 'show IK bones').onChange(function() {
     ikHelper.visible = chrC['show IK bones'];
   });
-  chrSetup.add(chrC, 'show rigid bodies').onChange(function () {
+  chrSetup.add(chrC, 'show rigid bodies').onChange(function() {
     if (physicsHelper !== undefined) physicsHelper.visible = chrC['show rigid bodies'];
   });
-  chrSetup.add(chrC, "afterglow", 0, 10, 0.01).onChange(function () {
+  chrSetup.add(chrC, "afterglow", 0, 10, 0.01).onChange(function() {
     helper.afterglow = chrC.afterglow;
   })
   gui.add(efC, 'sky').onChange(guiChanged);
@@ -164,6 +165,7 @@ function guiInit(gui, helper, guiChanged, SKE, chrC, efC) {
   gui.add(efC, 'infoShow').onChange(guiChanged);
   gui.add(efC, 'physics Reset');
 };
+
 function onXhrLoadLog(xhr) {
   if (xhr.lengthComputable) {
     const percentComplete = xhr.loaded / xhr.total * 100;
@@ -174,6 +176,7 @@ function onXhrLoadLog(xhr) {
     console.log(fType + " -> " + fName + " is " + precent + '% downloaded');
   }
 }
+
 function songParamsSelfDefine(rf, sn) {
   this.fname = null;
   this.vmd = null;
@@ -186,33 +189,57 @@ function songParamsSelfDefine(rf, sn) {
   this.artist = null;
   this.delayTime = 0;
 
-  let http = new XMLHttpRequest();
-  let songFolder = rf + sn;
-  http.open('HEAD', songFolder, false);
-  http.send();
-  let resp = http.response;
+  let songFolder, http, resp;
   let iscam = (el) => el.includes("Camera") || el.includes("camera");
   let isMotion = (el) => el.includes("Motion") || el.includes("motion");
   let isSong = (el) => el.includes(".mp3") || el.includes(".wav");
-  // parse responce to make folder list
-  if (resp.includes("addRow")) {
-    //folder list
-    let list = resp.split("addRow").splice(2, 3).map(e =>
-      e.split(',')[0].split('(\"')[1].split('\"')[0]).filter(e => e.indexOf(".txt") == -1);
-    
-    //make tempate;
-    this.fname = sn;
-    this.vmd = "/" + list.filter(e => isMotion(e));
-    this.cam = "/" + list.filter(e => iscam(e));
-    this.song = "/" + list.filter(e => isSong(e));
-    this.vmdAuthor = "[Unknown Author]";
-    this.camAuthor = "[Unknown Author]";
-    this.vocalTranner = "[Unknown Author]";
-    this.author = "[Unknown Author]";
-    this.artist = "[Unknown Artist]";
-    this.delayTime = 0;
-  } else {
-    alert("Sorry, " + sn + " is Unsupport song. :(");
-    throw new InternalError("Unsupport song, " + sn);
+  http = new XMLHttpRequest();
+  songFolder = rf + sn;
+  try {
+    http.open('HEAD', songFolder, false);
+    http.send();
+    resp = http.response;
+    // parse responce to make folder list
+    console.log(resp)
+    if (resp.includes("addRow")) {
+      //folder list
+      let list = resp.split("addRow").splice(2, 3).map(e =>
+        e.split(',')[0].split('(\"')[1].split('\"')[0]).filter(e => e.indexOf(".txt") == -1);
+
+      //make tempate;
+      this.fname = sn;
+      this.vmd = "/" + list.filter(e => isMotion(e));
+      this.cam = "/" + list.filter(e => iscam(e));
+      this.song = "/" + list.filter(e => isSong(e));
+      this.vmdAuthor = "[Unknown Author]";
+      this.camAuthor = "[Unknown Author]";
+      this.vocalTranner = "[Unknown Author]";
+      this.author = "[Unknown Author]";
+      this.artist = "[Unknown Artist]";
+      this.delayTime = 0;
+    } else {
+      alert("Sorry, " + sn + " is Unsupport song. :(");
+      throw resp;
+    }
+  } catch (e) {
+    errorDisplay(e);
   }
+}
+
+function errorDisplay(data) {
+  //#display-error <i class="far fa-exclamation-triangle"></i>
+  let eew = document.createElement("div");
+  eew.id = "errorWrapper";
+  let tnode = document.createTextNode("Error Display");
+  tnode.onclick = document.getElementById("errorWrapper").style.display = "none";
+  let ee = document.createElement("div");
+  ee.id = "display-error";
+  let ttnode = document.createTextNode(data);
+  ee.appendChild(ttnode)
+  let ei = document.createElement("i");
+  ei.className = "fas fa-exclamation-triangle";
+  ei.onclick = this.parentElement.style.display = "none";
+  eew.append(tnode);
+  ee.appendChild(ei);
+  eew.append(ee,);
 }
